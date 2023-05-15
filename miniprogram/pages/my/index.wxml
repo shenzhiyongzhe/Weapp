@@ -1,0 +1,24 @@
+<view class="container">
+  <view class="userinfo">
+      <button open-type="chooseAvatar" id="userinfo-avatar" bind:chooseavatar="onChooseAvatar"><image src="{{userinfo.avatar}}"></image></button>
+      <input type="nickname" class="user-nickname" placeholder="请输入昵称" name="{{userinfo.nickname}}" bindblur="reviseNickName"/>
+  </view>
+</view>
+<view class="navbox">
+  <view class="nav-item" bindtap="navToPublish">
+    <view>发布帖子</view>
+    <view class="arrow-right">∟</view>
+  </view>
+  <view class="nav-item"> 
+    <view>发布帖子</view>
+    <view class="arrow-right">∟</view>
+  </view>
+  <view class="nav-item">    
+    <view>我的发布</view>
+    <view class="arrow-right">∟</view>
+  </view>
+  <view class="nav-item"><view>设置</view></view>
+</view>
+
+
+<button type="primary" bindtap="test">测试</button>

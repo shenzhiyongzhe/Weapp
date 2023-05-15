@@ -1,0 +1,87 @@
+<form catchsubmit="formSubmit">
+  <van-cell-group>
+    <van-field
+      name="title"
+      clearable
+      label="标题"
+      placeholder="简述下房子特点"
+      bind:click-icon="onClickIcon"
+    />
+
+    <van-field
+      name="charge"
+      type="number"
+      label="租金"
+      clearable
+      placeholder="最多1500"
+    />
+
+    <van-field
+      value="{{location.name}}"
+      disabled
+      icon="arrow"
+      label="位置"
+      placeholder="选择房子所在位置"
+      bind:click-icon="chooseLocation"
+    />
+
+    <van-field
+      value="{{sex}}"
+      icon="arrow"
+      clearable
+      label="限制"
+      disabled
+      placeholder="选择对租客性别的要求，非必选"
+      bind:click-icon="popupPicker"
+    />
+
+    <van-field
+      name="description"
+      label="描述"
+      type="textarea"
+      placeholder="详细描述，非必填"
+      autosize
+      border="{{ true }}"
+    />
+
+  </van-cell-group>
+  <van-uploader 
+    file-list="{{ fileList }}" 
+    max-count="4" 
+    bind:after-read="selectPhotoes" 
+    upload-text="上传照片"
+    multiple
+    upload-icon="photo-o"
+    style="background-color: white;"
+  />
+  <button type="primary" form-type="submit">提交</button>
+</form>
+
+<van-popup
+    show="{{ show }}"
+    close-icon="close"
+    position="bottom"
+    custom-style="height: 30%"
+    bind:close="onClose"
+    overlay="{{false}}"
+>
+  <van-picker 
+    columns="{{ columns }}" 
+    show-toolbar
+    title="性别"
+    visible-item-count='{{2}}'
+    bind:confirm="popupConfirm"
+    bind:cancel="popupCancel"
+  />
+
+</van-popup>
+<button type="primary" bindtap="test">查询照片地址</button>
+<view>{{cloudFile}}</view>
+
+
+
+
+
+
+
+

@@ -1,0 +1,41 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/publish/index",
+    "pages/search/index",
+    "pages/my/index"
+  ],
+  "usingComponents": {
+    "van-icon": "@vant/weapp/icon/index"
+  },
+  "tabBar": {
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "img/index_inactive.png",
+        "selectedIconPath": "img/index.png"
+      },
+      {
+        "pagePath": "pages/my/index",
+        "text": "我的",
+        "iconPath": "img/my_inactive.png",
+        "selectedIconPath": "img/my.png"
+      }
+      
+    ]
+  },
+  "window": {
+    "backgroundColor": "#F6F6F6",
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarTitleText": "南租",
+    "navigationBarTextStyle": "black"
+  },
+
+  "requiredPrivateInfos": [
+    "chooseLocation"
+  ],
+
+  "sitemapLocation": "sitemap.json"
+}

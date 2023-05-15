@@ -1,0 +1,90 @@
+<view class="select-bar">
+  <view class="city-box">深圳市</view>
+  <view class="search-container">
+    <view class="search-bar">
+      <view class="icon-box"><icon type="search" class="search-icon" size="12"></icon></view>
+      <input id="search" placeholder-class="phcolor" 
+        type="text" maxlength="20" placeholder="请输入搜索关键字"                
+        bindfocus="isShow" bindblur="notShow" />
+      <view class="icon-box"><van-icon name="clear" wx:if="{{clear_icon_show}}" /></view>                
+    </view>
+  </view>
+</view>
+<view class="filter-box">
+  <view class="filter-item">
+    <view class="filter-inner" catchtap="pulldownShow">
+      <view class="filter-content" >{{region}}</view>
+      <view class="popup-icon"> ∟ </view>
+    </view> 
+  </view>
+  <view class="filter-item">
+    <view class="filter-inner">
+      <view class="filter-content">租金</view>
+      <view class="popup-icon"> ∟ </view>
+    </view> 
+  </view>
+  <view class="filter-item">
+    <view class="filter-inner">
+      <view class="filter-content">筛选</view>
+      <view class="popup-icon"> ∟ </view>
+    </view> 
+  </view>
+  <view class="filter-item">
+    <view class="filter-inner">
+      <view class="filter-content">排序</view>
+      <view class="popup-icon"> ∟ </view>
+    </view> 
+  </view>
+  <view class="pulldown-menu">
+    <view class="pulldown-left"><view class="pulldown-left-item" wx:for="{{pulldownLeft}}" wx:key="index" catchtap="leftTapEvent" data-index="{{index}}">{{item}}</view></view>
+    <view class="pulldown-right">
+      <scroll-view class="pro_list" scroll-y style="height: 30vh;" 	scroll-with-animation="true">
+        <view class="pulldown-right-item" wx:for="{{pulldownRight[leftIndex]}}" wx:key="index" catchtap="rightTapEvent" data-index="{{index}}">{{item}}</view>
+      </scroll-view>
+    </view>
+   
+  </view>
+  <!-- 辅助元素，用于点击取消下拉菜单的显示 -->
+  <view class="{{isPulldownDot ? '.pulldown-support': '.pulldown-support-hidden'}}" catchtap="pulldownTap"></view>
+
+</view>
+<!-- 房租信息卡片展示 -->
+<view class="rentInfo-container" wx:for="{{list}}" wx:key="_id">
+<!-- 上面用户的盒子 -->
+  <view class="topbox">
+    <view class="userBox">
+      <view class="userInfo-box">
+          <image src="{{item.userinfo.avatar}}" class="userAvatar"></image>
+          <view class="nickName-box">
+            <view class="nickname">{{item.userinfo.nickname}}</view>
+            <view class="updateTime">3小时前发布</view>
+          </view>      
+      </view>
+    </view>
+    <view class="charge-container"><view class="charge-box">租金：{{item.charge}}</view></view>
+  </view>
+  <!-- 中间的盒子 -->
+  <view class="midbox">
+    <view class="title-container"><text class="tag">整租ww</text>{{item.title}}{{item.description}}</view>
+    <view class="imgbox">
+      <block wx:for="{{item.fileList}}" wx:for-item="fileList" wx:key="index">
+        <image class="img" src="{{fileList}}" mode="aspectFill"/>
+      </block>
+    </view>
+  </view>
+  <!-- 下面详细地址的盒子 -->
+  <view class="bottombox">
+    <view class="addressName">{{item.location.address}}</view>
+    <view class="position">{{item.location.name}}</view>
+  </view>
+</view>
+<button catchtap="tempBtn" class="test">Test</button>
+
+<!-- <view catchtap="getValue" style="background-color: aqua; z-index: 10;">hello</view> -->
+
+
+
+
+
+
+

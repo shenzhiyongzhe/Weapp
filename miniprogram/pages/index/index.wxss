@@ -1,0 +1,249 @@
+.select-bar{
+  display: flex;
+  width: 100%;
+  height: 120rpx;
+  background-color: aquamarine;
+}
+.city-box{
+  width: 20%;
+  font-size: 27rpx;
+  line-height: 110rpx;
+  text-align: center;
+  background-color: white;
+}
+
+.search-container{
+  width: 80%;
+  background-color: white;
+}
+.search-bar{
+  height: 110rpx;
+  width: 95%;
+  display: flex;
+  align-items:center;
+  /* background-color: rgb(110, 73, 73); */
+
+}
+.icon-box{
+  width: 60rpx;
+  height: 74rpx;
+  background-color: rgb(247, 248, 250);
+}
+
+.search-icon{
+  height: 30rpx;
+  margin-left: 25rpx;
+  margin-top: 25rpx;
+  /* background-color: bisque; */
+}
+#search{
+  width: 85%;
+  height: 74rpx;
+  /* border: 1px solid rgb(163, 161, 161); */
+  border-right: 10rpx;
+  background-color: rgb(247, 248, 250);
+}
+.phcolor{
+  color: rgb(200, 204, 218);
+  font-size: 29rpx;
+}
+
+.van-icon{
+  color: lightgray;
+  margin-top: 20rpx;
+  margin-left: 10rpx;
+}
+
+.filter-box{
+  position: relative;
+  display: flex;
+  font-size: 24rpx;
+  border-bottom: 2rpx solid #ccc;
+  /* border-right: 2rpx solid #ccc; */
+  box-shadow: 2rpx 8rpx 10rpx #ccc;
+  background-color: white;
+  z-index: 10;
+}
+.filter-item{
+  width: 25%;
+  height: 50rpx;
+  display: flex;
+  justify-content: center;
+  /* background-color: rgb(50, 77, 95); */
+}
+.filter-inner{
+  height: 30rpx;
+  width: 100%;
+  line-height: 30rpx;
+  display: flex;
+  /* background-color: rgb(84, 135, 185); */
+  border-right: 2rpx solid rgb(170, 166, 166);
+
+}
+.filter-content{
+  width: 60%;
+  color: rgb(134, 130, 130);
+  text-align: right;
+  /* background-color: limegreen; */
+}
+.popup-icon{
+  width: 40%;
+  color: rgb(165, 164, 164);
+  font-size: 15rpx;
+  line-height: 25rpx;
+  text-align: center;
+  /* background-color: blue; */
+  transform: rotate(-45deg);
+}
+.pulldown-menu{
+  position: absolute;
+  top: 15rpx;
+  display: flex;
+  width: 100vw;
+  height: 0;
+  opacity: 0;
+  background-color: white;
+  z-index: 9;
+}
+.pulldown-left, .pulldown-right{
+  width: 50vw;
+  border-right: 1rpx solid #ccc;
+  /* background-color: lightpink; */
+}
+.pulldown-left-item, .pulldown-right-item{
+  width: 90%;
+  height: 70rpx;
+  margin: 0 auto;
+  border-bottom: 1rpx solid #ccc;
+  line-height: 60rpx;
+  /* background-color: lightseagreen; */
+}
+.pulldown-support{
+  position: fixed;
+  width: 100vw;
+  height: 60vh;
+  background-color: aqua;
+  bottom: 0;
+  left: 0;
+}
+.pulldown-support-hidden{
+  position: static;
+  width: 0;
+}
+.test{
+  width: 160rpx;
+  height: 80rpx;
+  bottom: -600rpx;
+  background-color: limegreen;
+  border-right: 2rpx solid red;
+  z-index: 11;
+}
+
+.rentInfo-container{
+  width: 100vw;
+  height: 400rpx;
+  margin-top: 15rpx;
+  /* box-sizing: border-box; */
+  background-color: white;
+}
+/* 上方盒子 */
+.topbox{
+  height: 100rpx;
+  width: 100vw;
+  display: flex;
+  justify-content: space-between;
+}
+.userBox{
+  display: flex;
+  justify-content: center;
+  width: 50%;
+  height: 100rpx;
+  /* background-color: rgb(223, 187, 208); */
+}
+.userInfo-box{
+  display: flex;
+  width: 100%;
+  padding: 0 20rpx;
+  /* background-color: rgb(233, 129, 31); */
+}
+
+.userAvatar{
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 100rpx;
+  /* background-color: rgb(146, 138, 216); */
+}
+.nickName-box{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  width: 150rpx;
+  margin-left: 20rpx;
+}
+.nickname{
+  overflow: hidden;
+  font-weight: bold;
+  font-size: 26rpx;
+  color: rgb(124, 122, 122);
+}
+.updateTime{
+  font-size: 24rpx;
+  color: rgb(173, 173, 173);
+}
+.charge-container{
+  width: 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10rpx;
+  /* background-color: rgb(111, 152, 212); */
+}
+.charge-box{
+  /* background-color: #ccc; */
+  padding: 10rpx;
+  font-size: 24rpx;
+  border: 1rpx solid rgb(136, 130, 130);
+  border-radius: 30rpx;
+}
+/* 中间盒子 */
+.midbox{
+  height: 250rpx;
+  /* display: flex; */
+  /* background-color: rgb(221, 233, 117); */
+}
+.title-container{
+  height: 70rpx;
+  padding: 10rpx 20rpx;
+  overflow: hidden;
+  -webkit-line-clamp: 2;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  font-size: 26rpx;
+  font-weight: 549;
+  line-height: 40rpx;
+}
+.tag{
+  padding: 8rpx 10rpx 8rpx 10rpx;
+  border-radius: 10rpx;
+  box-sizing: content-box;
+  line-height: 20rpx;
+  background-color: rgb(98, 182, 176);
+}
+.imgbox{
+  padding: 10rpx 20rpx;
+}
+.img{
+  width: 150rpx; 
+  height: 150rpx;
+  margin-right: 20rpx;
+}
+/* 下面的盒子 */
+.bottombox{
+  height: 50rpx;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20rpx;
+  font-size: 22rpx;
+  /* background-color: rgb(240, 194, 95); */
+}
