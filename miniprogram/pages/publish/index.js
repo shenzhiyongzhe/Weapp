@@ -53,7 +53,7 @@ Page({
 
   selectPhotoes(event) {
     let list = this.data.fileList;
-    event.detail.file.forEach((item, index) => list.push({url:item.url, name: index}))
+    event.detail.file.forEach((item, index) => list.push({url:item.url, name: index, deletable: true}))
     this.setData({fileList: list})
     // console.log(event.detail)
   },
@@ -100,6 +100,9 @@ Page({
 
   },
   async formSubmit(e){
+    wx.showLoading({
+      title: '上传中...',
+    });
     const {
       title,
       charge,
@@ -113,6 +116,7 @@ Page({
     console.log('list',fileList)
     const publish = {userinfo, title, charge, location, sex, description, fileList};
     await this.poster(publish);
+    wx.hideLoading();
     console.log("post success!")
   },
 // 上传照片的函数

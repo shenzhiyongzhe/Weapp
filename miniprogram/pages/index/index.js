@@ -17,10 +17,10 @@ Page({
     leftIndex: 0,
     rightIndex: 0,
     userInfo: {},
-
     list: [],
-    text: '我',
-    test_a: 0
+    pageIndex: 0,
+    pageSize: 4,
+    maxCount: 1,
   },
 
   async tempBtn(){
@@ -29,14 +29,22 @@ Page({
     // // this.getValues()
     // this.getUserInfo()
     const list = await this.getList();
-    this.setData({list});
+    this.setData({list: list});
     console.log(list)
   },
   // 获取房子的列表信息
   getList(){
-    return new Promise( resolve => {
-      db.limit(10).where({}).get().then(res => resolve(res.data))
-    })
+    const {pageIndex, pageSize, maxCount} = this.data;
+    if(pageIndex * pageSize < maxCount) 
+      return new Promise( resolve => {
+        db.limit(10).where({}).skip(pageSize * pageIndex).get()
+          .then(res => { this.data.maxCount++; resolve(res.data); })
+      })
+    else console.log("no more data!")
+  },
+  async autoGetList(){
+    const list = await this.getList();
+    this.setData({list});
   },
   // 获取用户头像和昵称
   getUserInfo(){
@@ -114,8 +122,12 @@ Page({
   onShow() {
     
   },
-  onLoad(){
-    // this.getKeys()
-    // this.getValues()
+  async onLoad(){
+    this.data.maxCount = (await db.count()).total;
+    this.autoGetList();
+  },
+  onReachBottom(){
+    console.log("reach bottom")
+    this.autoGetList();
   }
 });

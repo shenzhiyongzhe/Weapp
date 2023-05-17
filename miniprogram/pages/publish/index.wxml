@@ -51,6 +51,7 @@
     bind:after-read="selectPhotoes" 
     upload-text="上传照片"
     multiple
+    deletable="{{true}}"
     upload-icon="photo-o"
     style="background-color: white;"
   />

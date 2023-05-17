@@ -1,3 +1,6 @@
+page{
+  height: 100vh;
+}
 .select-bar{
   display: flex;
   width: 100%;
@@ -133,7 +136,7 @@
 .test{
   width: 160rpx;
   height: 80rpx;
-  bottom: -600rpx;
+  /* bottom: -600rpx; */
   background-color: limegreen;
   border-right: 2rpx solid red;
   z-index: 11;

@@ -1,6 +1,6 @@
 <view class="container">
   <view class="userinfo">
-      <button open-type="chooseAvatar" id="userinfo-avatar" bind:chooseavatar="onChooseAvatar"><image src="{{userinfo.avatar}}"></image></button>
+      <button open-type="chooseAvatar" id="userinfo-avatar" bind:chooseavatar="onChooseAvatar" bindtap="test"><image src="{{userinfo.avatar}}"></image></button>
       <input type="nickname" class="user-nickname" placeholder="请输入昵称" name="{{userinfo.nickname}}" bindblur="reviseNickName"/>
   </view>
 </view>

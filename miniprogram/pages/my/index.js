@@ -50,10 +50,32 @@ Page({
       })
     })
   },
+  async getUserOpenId() {
+    wx.login({
+      success: (res) => {
+        // console.log(res);
+        wx.request({
+          url: 'https://api.weixin.qq.com/sns/jscode2session',
+          method: 'GET',
+          data: {
+            appid: 'wxa09251f5028d3bf0',
+            secret: '8c099e637711aac11ca7696b8950532a',
+            js_code: res.code,
+            grant_type: 'authorization_code',
+          },
+          success: res => wx.setStorage({ openId: res.data.openid })
+        })
+      },
+    })
+  },
+     
  async test(){
-   const res = await this.uploadAvatar()
-   const url = await this.getAvatarUrl()
-   console.log(Date.now(), res, url);
+  //  const res = await this.uploadAvatar()
+  //  const url = await this.getAvatarUrl()
+  //  this.formatDate()
+  const time = new Date()
+   console.log(time);
+   this.getUserOpenId()
   },
 
 

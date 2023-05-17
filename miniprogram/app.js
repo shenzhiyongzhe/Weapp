@@ -17,5 +17,8 @@ App({
     this.globalData = {
       userinfo: {}
     };
+  },
+  formatDate(){
+    console.log("format date")
   }
 });

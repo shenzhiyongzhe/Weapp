@@ -65,7 +65,9 @@
   </view>
   <!-- 中间的盒子 -->
   <view class="midbox">
-    <view class="title-container"><text class="tag">整租ww</text>{{item.title}}{{item.description}}</view>
+    <view class="title-container">
+      <!-- <text class="tag">整租ww</text> -->
+      {{item.title}}{{item.description}}</view>
     <view class="imgbox">
       <block wx:for="{{item.fileList}}" wx:for-item="fileList" wx:key="index">
         <image class="img" src="{{fileList}}" mode="aspectFill"/>
