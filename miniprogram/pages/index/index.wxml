@@ -1,3 +1,7 @@
+<view>
+
+</view>
+<!-- 搜索框 -->
 <view class="select-bar">
   <view class="city-box">深圳市</view>
   <view class="search-container">
@@ -10,6 +14,7 @@
     </view>
   </view>
 </view>
+<!-- 筛选框 -->
 <view class="filter-box">
   <view class="filter-item">
     <view class="filter-inner" catchtap="pulldownShow">
@@ -35,52 +40,57 @@
       <view class="popup-icon"> ∟ </view>
     </view> 
   </view>
-  <view class="pulldown-menu">
-    <view class="pulldown-left"><view class="pulldown-left-item" wx:for="{{pulldownLeft}}" wx:key="index" catchtap="leftTapEvent" data-index="{{index}}">{{item}}</view></view>
-    <view class="pulldown-right">
-      <scroll-view class="pro_list" scroll-y style="height: 30vh;" 	scroll-with-animation="true">
-        <view class="pulldown-right-item" wx:for="{{pulldownRight[leftIndex]}}" wx:key="index" catchtap="rightTapEvent" data-index="{{index}}">{{item}}</view>
-      </scroll-view>
-    </view>
-   
-  </view>
-  <!-- 辅助元素，用于点击取消下拉菜单的显示 -->
-  <view class="{{isPulldownDot ? '.pulldown-support': '.pulldown-support-hidden'}}" catchtap="pulldownTap"></view>
-
-</view>
-<!-- 房租信息卡片展示 -->
-<view class="rentInfo-container" wx:for="{{list}}" wx:key="_id">
-<!-- 上面用户的盒子 -->
-  <view class="topbox">
-    <view class="userBox">
-      <view class="userInfo-box">
-          <image src="{{item.userinfo.avatar}}" class="userAvatar"></image>
-          <view class="nickName-box">
-            <view class="nickname">{{item.userinfo.nickname}}</view>
-            <view class="updateTime">3小时前发布</view>
-          </view>      
+  <!-- 下拉框的内容 -->
+  <view style="display: {{display}};">
+    <view class="pulldown-menu">
+      <view class="pulldown-left">
+        <view class="pulldown-left-item" wx:for="{{pulldownLeft}}" wx:key="index" catchtap="leftTapEvent" data-index="{{index}}">{{item}}</view>
+      </view>
+      <view class="pulldown-right">
+        <scroll-view class="pro_list" scroll-y style="height: 30vh;" scroll-with-animation="true">
+          <view class="pulldown-right-item" wx:for="{{pulldownRight[leftIndex]}}" wx:key="index" catchtap="rightTapEvent" data-index="{{index}}">{{item}}</view>
+        </scroll-view>
       </view>
     </view>
-    <view class="charge-container"><view class="charge-box">租金：{{item.charge}}</view></view>
-  </view>
-  <!-- 中间的盒子 -->
-  <view class="midbox">
-    <view class="title-container">
-      <!-- <text class="tag">整租ww</text> -->
-      {{item.title}}{{item.description}}</view>
-    <view class="imgbox">
-      <block wx:for="{{item.fileList}}" wx:for-item="fileList" wx:key="index">
-        <image class="img" src="{{fileList}}" mode="aspectFill"/>
-      </block>
-    </view>
-  </view>
-  <!-- 下面详细地址的盒子 -->
-  <view class="bottombox">
-    <view class="addressName">{{item.location.address}}</view>
-    <view class="position">{{item.location.name}}</view>
   </view>
 </view>
-<button catchtap="tempBtn" class="test">Test</button>
+<!-- 辅助元素，用于点击取消下拉菜单的显示 -->
+<view class="{{isPulldownDot ? '.mask': '.mask-hidden'}}" catchtap="pulldownTap"></view>
+<!-- 房租信息卡片展示 -->
+<scroll-view>
+  <view class="rentInfo-container" wx:for="{{list}}" wx:key="_id">
+  <!-- 上面用户的盒子 -->
+    <view class="topbox">
+      <view class="userBox">
+        <view class="userInfo-box">
+            <image src="{{item.userinfo.avatar}}" class="userAvatar"></image>
+            <view class="nickName-box">
+              <view class="nickname">{{item.userinfo.nickname}}</view>
+              <view class="updateTime">3小时前发布</view>
+            </view>      
+        </view>
+      </view>
+      <view class="charge-container"><view class="charge-box">租金：{{item.rent}}</view></view>
+    </view>
+    <!-- 中间的盒子 -->
+    <view class="midbox">
+      <view class="title-container">
+        <!-- <text class="tag">整租ww</text> -->
+        {{item.title}}{{item.description}}</view>
+      <view class="imgbox">
+        <block wx:for="{{item.list}}" wx:for-item="url" wx:key="index">
+          <image class="img" src="{{url}}" mode="aspectFill"/>
+        </block>
+      </view>
+    </view>
+    <!-- 下面详细地址的盒子 -->
+    <view class="bottombox">
+      <view class="addressName">{{item.location.address}}</view>
+      <view class="position">{{item.location.name}}</view>
+    </view>
+  </view>
+</scroll-view>
+<!-- <button catchtap="tempBtn" class="test">Test</button> -->
 
 <!-- <view catchtap="getValue" style="background-color: aqua; z-index: 10;">hello</view> -->
 

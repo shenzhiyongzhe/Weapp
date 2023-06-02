@@ -1,1 +1,67 @@
 /* pages/publish/index.wxss */
+.form-input {
+  width: 100vw;
+  display: flex;
+  height: 80rpx;
+  line-height: 80rpx;
+  align-items: center;
+  box-decoration-break: slice;
+}
+
+.lable {
+  width: 20%;
+  text-align: center;
+  font-size: 26rpx;
+}
+
+.input {
+  width: 60%;
+  font-size: 28rpx;
+}
+
+.input-clear-icon {
+  width: 20%;
+  text-align: center;
+  color: gray;
+  font-size: 38rpx;
+  transform: rotate(45deg);
+}
+
+.input-forward-icon {
+  width: 20%;
+  text-align: center;
+  color: gray;
+  font-size: 20rpx;
+  transform: rotate(-135deg);
+}
+
+.photo-box {
+  display: flex;
+  width: 100vw;
+  height: 120rpx;
+  overflow: hidden;
+}
+
+.btn {
+  width: 20%;
+  height: 120rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-image: linear-gradient(#aacdde 0%, #afcbdf 100%);
+}
+/* .btn::after{
+  border: 1rpx solid #83b3bb;
+} */
+
+.img-icon{
+  width: 100%;
+  height: 120rpx;
+}
+.img-nail{
+  width: 20%;
+  height: 120rpx;
+}
+.navigator-hover {
+  color:white;
+}

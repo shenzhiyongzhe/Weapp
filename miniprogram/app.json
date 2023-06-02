@@ -2,12 +2,13 @@
   "pages": [
     "pages/index/index",
     "pages/publish/index",
-    "pages/search/index",
-    "pages/my/index"
+    "pages/my/index",
+    "pages/description/index"
   ],
   "usingComponents": {
-    "van-icon": "@vant/weapp/icon/index"
+
   },
+
   "tabBar": {
     "list": [
       {
@@ -26,9 +27,9 @@
     ]
   },
   "window": {
-    "backgroundColor": "#F6F6F6",
+    "backgroundColor": "#a1c4fd",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#F6F6F6",
+    "navigationBarBackgroundColor": "#98d8e1",
     "navigationBarTitleText": "南租",
     "navigationBarTextStyle": "black"
   },
@@ -37,5 +38,7 @@
     "chooseLocation"
   ],
 
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "renderer": "skyline",
+  "lazyCodeLoading": "requiredComponents"
 }

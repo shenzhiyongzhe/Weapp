@@ -1,0 +1,27 @@
+/* pages/description/index.wxss */
+.tips {
+  width: 96vw;
+  background-color: rgba(239, 249, 250, 0.5);
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin: 0 auto;
+  box-sizing: border-box;
+  font-size: 24rpx;
+  color: rgb(129, 127, 127);
+}
+.text-description{
+  width: 96vw;
+  height: 500rpx;
+  margin: 20rpx auto;
+  padding: 20rpx;
+  box-sizing: border-box;
+  border-radius: 20rpx;
+  background-color: rgba(239, 249, 250, 0.5);
+}
+.btn-finish {
+  width: 70vw;
+  border-radius: 40rpx;
+  margin: 100rpx auto;
+  color: #EDF2F4;
+  background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+}
