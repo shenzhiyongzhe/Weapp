@@ -5,9 +5,6 @@
     "pages/my/index",
     "pages/description/index"
   ],
-  "usingComponents": {
-
-  },
 
   "tabBar": {
     "list": [
@@ -38,7 +35,6 @@
     "chooseLocation"
   ],
 
-  "sitemapLocation": "sitemap.json",
-  "renderer": "skyline",
-  "lazyCodeLoading": "requiredComponents"
+  "sitemapLocation": "sitemap.json"
+
 }

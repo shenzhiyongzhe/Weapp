@@ -1,63 +1,25 @@
-<view>
-
+<view class="header">
+  <view class="search-container">
+    <view>深圳市</view>
+    <view class="input-box">
+      <icon type="search" size="14" />
+      <input type="text" placeholder="请输入关键字" />
+      <view class="input-clear">+</view>
+    </view>
+  </view>
+  <view class="filter-box">
+    <view class="filter-item"><view>区域</view><view class="pulldown-icon">∟</view ></view>
+    <view class="filter-item"><view>区域</view><view class="pulldown-icon">∟</view ></view>
+    <view class="filter-item"><view>区域</view><view class="pulldown-icon">∟</view ></view>
+    <view class="filter-item"><view>区域</view><view class="pulldown-icon">∟</view ></view>
+  </view>
 </view>
 <!-- 搜索框 -->
-<view class="select-bar">
-  <view class="city-box">深圳市</view>
-  <view class="search-container">
-    <view class="search-bar">
-      <view class="icon-box"><icon type="search" class="search-icon" size="12"></icon></view>
-      <input id="search" placeholder-class="phcolor" 
-        type="text" maxlength="20" placeholder="请输入搜索关键字"                
-        bindfocus="isShow" bindblur="notShow" />
-      <view class="icon-box"><van-icon name="clear" wx:if="{{clear_icon_show}}" /></view>                
-    </view>
-  </view>
-</view>
-<!-- 筛选框 -->
-<view class="filter-box">
-  <view class="filter-item">
-    <view class="filter-inner" catchtap="pulldownShow">
-      <view class="filter-content" >{{region}}</view>
-      <view class="popup-icon"> ∟ </view>
-    </view> 
-  </view>
-  <view class="filter-item">
-    <view class="filter-inner">
-      <view class="filter-content">租金</view>
-      <view class="popup-icon"> ∟ </view>
-    </view> 
-  </view>
-  <view class="filter-item">
-    <view class="filter-inner">
-      <view class="filter-content">筛选</view>
-      <view class="popup-icon"> ∟ </view>
-    </view> 
-  </view>
-  <view class="filter-item">
-    <view class="filter-inner">
-      <view class="filter-content">排序</view>
-      <view class="popup-icon"> ∟ </view>
-    </view> 
-  </view>
-  <!-- 下拉框的内容 -->
-  <view style="display: {{display}};">
-    <view class="pulldown-menu">
-      <view class="pulldown-left">
-        <view class="pulldown-left-item" wx:for="{{pulldownLeft}}" wx:key="index" catchtap="leftTapEvent" data-index="{{index}}">{{item}}</view>
-      </view>
-      <view class="pulldown-right">
-        <scroll-view class="pro_list" scroll-y style="height: 30vh;" scroll-with-animation="true">
-          <view class="pulldown-right-item" wx:for="{{pulldownRight[leftIndex]}}" wx:key="index" catchtap="rightTapEvent" data-index="{{index}}">{{item}}</view>
-        </scroll-view>
-      </view>
-    </view>
-  </view>
-</view>
+
 <!-- 辅助元素，用于点击取消下拉菜单的显示 -->
 <view class="{{isPulldownDot ? '.mask': '.mask-hidden'}}" catchtap="pulldownTap"></view>
 <!-- 房租信息卡片展示 -->
-<scroll-view>
+<scroll-view class="list-view" scroll-y="true" 	type="list">
   <view class="rentInfo-container" wx:for="{{list}}" wx:key="_id">
   <!-- 上面用户的盒子 -->
     <view class="topbox">
