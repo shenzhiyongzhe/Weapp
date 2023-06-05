@@ -1,8 +1,56 @@
 page{
-  height: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+.test-btn{
+  position: absolute;
+  width: 100rpx;
+  height: 100rxp;
+  bottom: 220rpx;
+  right: 100rpx;
+  box-shadow: 10rpx 10rpx 20rpx black;
+  font-size: 24rpx;
+}
+.active{
+  color: red;
+  transform: rotateX(-225deg);
 }
 .header{
-  background-color: white;
+  position: fixed;
+  background-image: linear-gradient(to top, #83ccd2 0%, #97d9e1 100%);
+  box-shadow: 2rpx 4rpx 20rpx #0f9292;
+  border-bottom-right-radius: 20rpx;
+  border-bottom-left-radius: 20rpx;
+  margin-bottom: 20rpx;
+  z-index: 99;
+}
+.pulldown-container{
+  position: absolute;
+  width: 100vw;
+  height: 400rpx;
+  display: flex;
+  margin-top: 20rpx;
+  background-color: #97d9e1;
+  z-index: 99;
+}
+.pulldown-hidden{
+  display: none;
+}
+
+.left-box, .right-box{
+  width: 50%;
+  height: 100%;
+  border-right: 1rpx solid #036969;
+}
+.left-item, .right-item{
+  width: 80%;
+  height: 60rpx;
+  line-height: 50rpx;
+  font-size: 26rpx;
+  color: #036969;
+  margin: 20rpx auto 0 38rpx;
+  border-bottom: 1rpx solid rgb(74, 105, 109);
 }
 .search-container {
   display: flex;
@@ -19,7 +67,7 @@ page{
   display: flex;
   padding: 4rpx;
   align-items: center;
-  border: 1rpx solid #ccc;
+  border: 1rpx solid #33CCCC;
   border-radius: 48rpx;
 }
 .input-box input{
@@ -47,6 +95,7 @@ page{
 .filter-item{
   width: 25%;
   display: flex;
+  color: #0d7377;
   justify-content: space-evenly;
   border-right: 1rpx solid #ccc;
 }
@@ -55,6 +104,8 @@ page{
   transform: rotate(-45deg);
 }
 .list-view {
+  position: absolute;
+  margin-top: 170rpx;
   height: calc(100vh - 170rpx);
   width: 100vw;
 }

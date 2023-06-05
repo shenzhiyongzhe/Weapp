@@ -1,0 +1,7 @@
+<view class="tip">
+  走心的文案将大大提高出租效率，详细描述房源、室友、宠物等情况并及时更新房源的出租情况。
+</view>
+<view class="container">
+  <textarea class="content" value="{{description}}" bindconfirm="textConfirm" placeholder="请输入详细描述" auto-focus maxlength="1000"/>
+</view>
+<button bindtap="backToPagePublish">写好了</button>

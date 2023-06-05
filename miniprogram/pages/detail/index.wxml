@@ -1,0 +1,41 @@
+<view class="container">
+  <view class="title">{{detail.title}}</view>
+  <view class="userBox">
+      <image src="{{detail.userinfo.avatar}}" class="userAvatar"></image>
+      <view class="nickName-box">
+        <view class="nickname">{{detail.userinfo.nickname}}</view>
+        <view class="updateTime">3小时前发布</view>
+      </view>  
+      <view class="map-float">
+        <map scale="12" latitude="{{detail.location.latitude}}" longitude="{{detail.location.longitude}}" markers="{{marker}}"></map> 
+      </view>
+   
+  </view>
+  <view class="info-box">
+    <view class="info-item">
+      <view>租金</view>
+      <view>{{detail.rent}} 元/月</view>
+    </view>
+    <view class="info-item">
+      <view>性别限制</view>
+      <view>{{detail.sex}}</view>
+    </view>
+    <view class="info-item">
+      <view>位置（点击可查看地图）</view>
+      <view>{{detail.location.name}}</view>
+    </view>
+  </view>
+  <view class="info-content">
+    {{detail.description}}
+    </view>
+    <view class="imgbox">
+      <block wx:for="{{detail.fileList}}" wx:for-item="fileList" wx:key="index">
+        <image class="img" src="{{fileList}}" mode="aspectFill"/>
+      </block>
+    </view>
+</view>
+<!-- 广告 -->
+
+<view class="becareful">
+  .
+</view>

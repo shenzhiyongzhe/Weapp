@@ -3,25 +3,43 @@
     <view>深圳市</view>
     <view class="input-box">
       <icon type="search" size="14" />
-      <input type="text" placeholder="请输入关键字" />
+      <input type="text" bindconfirm="inputSearch" maxlength="10" placeholder="请输入关键字" confirm-type="search" />
       <view class="input-clear">+</view>
     </view>
   </view>
   <view class="filter-box">
-    <view class="filter-item"><view>区域</view><view class="pulldown-icon">∟</view ></view>
-    <view class="filter-item"><view>区域</view><view class="pulldown-icon">∟</view ></view>
-    <view class="filter-item"><view>区域</view><view class="pulldown-icon">∟</view ></view>
-    <view class="filter-item"><view>区域</view><view class="pulldown-icon">∟</view ></view>
+    <view wx:for="{{filterList}}" wx:key="index" class="filter-item" catchtap="pulldownShow">
+      <view>{{item}}</view>
+      <view class="pulldown-icon {{isPulldown ? '.active' : ''}}">∟</view>
+    </view>
+  </view>
+  <view class="{{isPulldown ? '.pulldown-container' : '.pulldown-hidden'}}">
+    <view class="left-box">
+      <view class="left-item">{{filterItem[0][0]}}</view></view>
+    <view class="right-box">
+      <view class="right-item" bindtap="districtClick" data-index="{{index}}" wx:for="{{filterItem[0][1]}}" wx:key="index" >{{item}}</view>
+    </view>
   </view>
 </view>
-<!-- 搜索框 -->
+
 
 <!-- 辅助元素，用于点击取消下拉菜单的显示 -->
-<view class="{{isPulldownDot ? '.mask': '.mask-hidden'}}" catchtap="pulldownTap"></view>
+<view class="{{isPulldown ? '.mask': '.mask-hidden'}}" catchtap="pulldownTap"></view>
 <!-- 房租信息卡片展示 -->
-<scroll-view class="list-view" scroll-y="true" 	type="list">
-  <view class="rentInfo-container" wx:for="{{list}}" wx:key="_id">
-  <!-- 上面用户的盒子 -->
+<scroll-view class="list-view"	
+  bindscrolltolower="reachBottomLoad" scroll-y="true" 
+  refresher-enabled="{{true}}"
+  enable-back-to-top="{{true}}"
+  refresher-enabled="{{true}}"
+  refresher-threshold="{{80}}"
+  refresher-triggered="{{isRefresh}}"
+  scroll-top="{{scrollTop}}"
+  refresher-background="lightgreen"
+  bindrefresherrefresh="pullDownRefresh"
+ >
+  <!-- <view class="blankTip ">没有数据</view> -->
+  <view class="rentInfo-container" wx:for="{{list}}" wx:key="_id" bindtap="navToPageDetail" data-detail="{{item}}">
+    <!-- 上面用户的盒子 -->
     <view class="topbox">
       <view class="userBox">
         <view class="userInfo-box">
@@ -52,7 +70,7 @@
     </view>
   </view>
 </scroll-view>
-<!-- <button catchtap="tempBtn" class="test">Test</button> -->
+<!-- <button catchtap="tempBtn" class="test-btn">回到顶部</button> -->
 
 <!-- <view catchtap="getValue" style="background-color: aqua; z-index: 10;">hello</view> -->
 

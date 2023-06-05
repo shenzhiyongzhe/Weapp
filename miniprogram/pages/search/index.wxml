@@ -1,0 +1,19 @@
+<view class="search-container">
+  <view class="search-bar">
+    <view class="icon-box">
+      <icon type="search" class="search-icon" size="12"></icon>
+    </view>
+    <input id="search" 
+      placeholder-class="phcolor" 
+      type="text" 
+      maxlength="20"
+      placeholder="请输入搜索关键字" 
+      bindfocus="isShow"
+      bindblur="notShow" 
+      />
+    <view class="icon-box" >
+      <van-icon name="clear" wx:if="{{isShow}}"/>
+    </view>
+  </view>
+</view>
+<button bindtap="isShow">++</button>

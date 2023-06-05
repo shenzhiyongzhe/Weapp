@@ -1,43 +1,123 @@
 // index.js
-const db = wx.cloud.database().collection('list');
-
+const db = wx.cloud.database();
+const _ = db.command;
 Page({
   data: {
-    
-    region: '区域',
+
     clear_icon_show: false,
-    isPulldownDot: false,
+    isPulldown: false,
     display: 'block',
-    pulldownList:{
-      'district':  ['罗湖区', '福田区', '南山区','宝安区', '龙岗区', '盐田区', '龙华区', '坪山区', '光明区'],
-      'around': ['1km', '2km', '3km', '5km'],
-      'metro': ['1号线', '2号线', '3号线', '4号线', '5号线', '6号线', '7号线', '8号线', '9号线', '10号线', '11号线', '12号线']   
-    },
-    pulldownLeft: [],
-    pulldownRight: [],
-    leftIndex: 0,
-    rightIndex: 0,
+    filterList:['区域', '租金', '筛选', '排序'],
+    filterItem: [
+      [["区域"], ['南山区', '宝安区']], 
+      [["租金"], [500, 800, 1000, 1200, 1500]]
+    ],
+    randNum: Math.random(),
+    keyword: '',
     userInfo: {},
     list: [],
     pageIndex: 0,
-    pageSize: 10,
+    pageSize: 5,
     maxCount: 0,
+    isMax: false,
+    isRefresh: true,
+    scrollTop: 0,
+    active: false
   },
 
-  async tempBtn(){
-    // this.pulldownShow();
-    // this.parsePulldownList()
-    // // this.getValues()
-    // this.getUserInfo()
+  tempBtn(keyword){
+    this.getList()
+    console.log(this.data.pageIndex)
+  },
+  //下拉刷新
+  async pullDownRefresh(){
     const list = await this.getList();
-    this.setData({list: list});
-    console.log(list)
+    if(list)
+      this.setData({list: this.data.list.concat(list),scrollTop: 0, isRefresh: false})
+    else
+      setTimeout(()=>{this.setData({isRefresh: false})},800)
+    console.log("下拉刷新...");
   },
-  // 计算页面数据是否到底
-  isLoadOut(){
-    const {pageIndex, pageSize, maxCount} = this.data;
-    return pageIndex * pageSize < maxCount ? true : false
+  //跳转到详情页
+  navToPageDetail(e){
+    wx.navigateTo({
+      url: `/pages/detail/index?detail=${encodeURIComponent(JSON.stringify(e.currentTarget.dataset.detail))}`,
+    })
+    // console.log(e.currentTarget.dataset.detail)
   },
+  //触底加载
+  async reachBottomLoad(){
+    if(this.data.keyword){
+      if(this.data.isMax == false)
+      {
+        const data = await this.Search(this.data.keyword);
+        if(!data[0]) 
+          this.setData({isMax: true})
+        else 
+          this.setData({list: [...this.data.list, ...data]})
+        // console.log(data[0])
+      }
+    else
+      console.log('search no more data')
+    } 
+    else 
+      this.getList()
+      // console.log("default get list")
+  },
+  //关键字搜索
+  Search(keyword){
+    const {pageIndex, pageSize} = this.data;
+    return new Promise( resolve => {  
+      db.collection('list').limit(pageSize).where(_.or([
+        {'location.address': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
+        {title: db.RegExp({regexp: '.*' + keyword})},
+        {description: db.RegExp({regexp: '.*' + keyword})}
+      ]))
+      .skip(pageSize * pageIndex).get().then(res => {
+        this.data.pageIndex++;
+        // console.log('return data', res.data)
+        resolve(res.data)
+      }) 
+    })
+  },
+  //搜索框搜索
+  async inputSearch(e){
+    const keyword = e.detail.value;
+    console.log(keyword)
+    this.setData({keyword, pageIndex: 0, isMax: false, list: []})
+    const data = await this.Search(keyword);
+    if(!data[0]) 
+      return console.log("there is no information about this keyword")
+    else 
+      this.setData({list: [...this.data.list, ...data]})
+
+    // console.log(data)
+  },
+  //下拉菜单 区域的点击事件
+  async districtClick(e){
+    const index = e.target.dataset.index
+    const item = this.data.filterItem[0][1][index]
+    this.setData({ 
+      filterList: this.data.filterList.map((i, j) => {
+        if(j == 0) return item 
+        else return i
+      }),
+      keyword: item,
+      pageIndex: 0,
+      list: [],
+      active: true
+    });
+      const data = await this.Search(item);
+      if(!data[0]) 
+        return console.log('there is no information in this location')
+      else 
+        this.setData({list: [ ...this.data.list, ...data]})
+        // console.log(data[0])
+      
+    this.setData({isPulldown: false})
+
+  },
+
     // 获取用户唯一表示和登录认证
     async getUserOpenId() {
       wx.login({
@@ -59,23 +139,17 @@ Page({
     },
   // 获取房子的列表信息
   getList(){
-    const {pageIndex, pageSize, maxCount} = this.data;
+    const {pageIndex, pageSize, maxCount, list} = this.data;
     if(pageIndex * pageSize < maxCount) 
-      return new Promise( resolve => 
-        db.limit(10).where({}).skip(pageSize * pageIndex).get()
-          .then(res => { this.data.pageIndex++; resolve(res.data); })
-      )
+      db.collection('list').limit(pageSize).skip(pageSize * pageIndex).get()
+        .then(res => { 
+          this.data.pageIndex++;
+          this.setData({ list : list.concat(res.data)})
+        })
+    
     else return false
   },
-  async autoGetList(){
-    const list = this.data.list
-    if(this.isLoadOut()){
-      const res = await this.getList();
-      this.setData({list: list.concat(res)});
-    }
-    else
-      console.log("no more data!", this.isLoadOut())
-  },
+
   // 获取用户头像和昵称
   getUserInfo(){
     wx.getUserInfo({
@@ -86,61 +160,35 @@ Page({
       }
     })
   },
-  leftTapEvent(e){
-    this.setData({leftIndex: e.target.dataset.index})
-  },
-  rightTapEvent(e){
-    this.setData({region: this.data.pulldownRight[this.data.leftIndex][e.target.dataset.index]});
-    this.pulldownHidden();
-  },
-
-  parsePulldownList(){
-    var pulldownLeft = Object.keys(this.data.pulldownList); 
-    var pulldownRight = Object.values(this.data.pulldownList)
-    this.setData({pulldownLeft, pulldownRight})
-    // console.log(pulldownLeft, pulldownRight)
-    
-  },
-
-  RegionChange(e){
-    this.setData({region: e.detail.value})
-  },
 
   // 动画
   pulldownShow(){
-    this.setData({isPulldownDot: true, display: 'block'});
-    this.animate('.pulldown-menu', [
-      { translateY: 0, height: 0 },
-      { translateY: 10, height: 15},
-      { translateY: 20,  height: 30},
-    ], 300, function(){
-              this.clearAnimation('.pulldown-menu', {opacity: false, translateY: false})
-            }.bind(this));
-
-    this.animate('.popup-icon', [ {rotate: 135}],20000, 
-      function(){
-        this.clearAnimation('.popup-icon', {rotate: false})}.bind(this));       
+    this.setData({isPulldown: true, display: 'block'});
+    // this.animate('.pulldown-container', [
+    //   { translateY: 0, height: 0 },
+    //   { translateY: 10, height: 15},
+    //   { translateY: 15,  height: 30},
+    // ], 300, function(){
+    //           this.clearAnimation('.pulldown-container', {opacity: false, translateY: false})
+    //         }.bind(this));    
    
   },
   pulldownHidden(){
-    this.animate('.pulldown-menu', [
-      { translateY: 20 },
-      { translateY: 10},
-      { translateY: 0,  },
-    ], 300, function(){
-      this.clearAnimation('.pulldown-menu', {translateY: true})    
-    }.bind(this));
-    this.setData({isPulldownDot: false});
-    this.animate('.popup-icon', [ {rotate: -45}],300, 
-    function(){
-      this.clearAnimation('.popup-icon', {rotate: false})}.bind(this)); 
+    // this.animate('.pulldown-container', [
+    //   { translateY: 20 },
+    //   { translateY: 10},
+    //   { translateY: 0,  },
+    // ], 300, function(){
+    //   this.clearAnimation('.pulldown-menu', {translateY: true})    
+    // }.bind(this));
+    this.setData({isPulldown: false});
+
   },
 
 // 辅助元素的点击事件
   pulldownTap(){
     this.pulldownHidden();
-    this.setData({isPulldownDot: false})
-    console.log('pulldown has been hidden')
+    this.setData({isPulldown: false})
   },
 
 
@@ -148,13 +196,9 @@ Page({
     
   },
   async onLoad(){
-    this.parsePulldownList();
-    this.data.maxCount = (await db.count()).total;
-    // console.log(this.data.maxCount)
-    this.getUserOpenId();
-    this.autoGetList();
+   
+    this.data.maxCount = (await db.collection('list').count()).total;
+    this.getList();
   },
-  onReachBottom(){
-    this.autoGetList();
-  }
+
 });
