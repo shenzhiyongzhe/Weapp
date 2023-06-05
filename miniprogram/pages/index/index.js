@@ -5,9 +5,9 @@ Page({
   data: {
 
     clear_icon_show: false,
-    isPulldown: false,
+    isPulldown: [false, false, false, false],
     display: 'block',
-    filterList:['区域', '租金', '筛选', '排序'],
+    region: '区域',
     filterItem: [
       [["区域"], ['南山区', '宝安区']], 
       [["租金"], [500, 800, 1000, 1200, 1500]]
@@ -98,10 +98,7 @@ Page({
     const index = e.target.dataset.index
     const item = this.data.filterItem[0][1][index]
     this.setData({ 
-      filterList: this.data.filterList.map((i, j) => {
-        if(j == 0) return item 
-        else return i
-      }),
+      region: item,
       keyword: item,
       pageIndex: 0,
       list: [],
@@ -162,33 +159,25 @@ Page({
   },
 
   // 动画
-  pulldownShow(){
-    this.setData({isPulldown: true, display: 'block'});
+  regionPulldown(){
+    this.setData({"isPulldown[0]": !this.data.isPulldown[0], display: 'block'});
     // this.animate('.pulldown-container', [
     //   { translateY: 0, height: 0 },
     //   { translateY: 10, height: 15},
     //   { translateY: 15,  height: 30},
-    // ], 300, function(){
+    // ], 400, function(){
     //           this.clearAnimation('.pulldown-container', {opacity: false, translateY: false})
     //         }.bind(this));    
    
   },
-  pulldownHidden(){
-    // this.animate('.pulldown-container', [
-    //   { translateY: 20 },
-    //   { translateY: 10},
-    //   { translateY: 0,  },
-    // ], 300, function(){
-    //   this.clearAnimation('.pulldown-menu', {translateY: true})    
-    // }.bind(this));
-    this.setData({isPulldown: false});
-
+  rentPulldown(){
+    this.setData({isPulldown: [false, true, false, false]})
   },
-
-// 辅助元素的点击事件
-  pulldownTap(){
-    this.pulldownHidden();
-    this.setData({isPulldown: false})
+  rentConfirm(){
+    this.setData({isPulldown: [false, false, false, false]})
+  },
+  pulldownHidden(){
+    this.setData({isPulldown: [false, false, false, false]});
   },
 
 

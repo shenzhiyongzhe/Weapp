@@ -25,14 +25,47 @@ page{
   margin-bottom: 20rpx;
   z-index: 99;
 }
-.pulldown-container{
+.region-container{
   position: absolute;
   width: 100vw;
   height: 400rpx;
   display: flex;
-  margin-top: 20rpx;
+  left: 0;
+  top: 60rpx;
+  border-radius: 20rpx;
   background-color: #97d9e1;
   z-index: 99;
+}
+.rent-container {
+  position: absolute;
+  width: 100vw;
+  height: 400rpx;
+  left: -25vw;
+  top: 60rpx;
+  border-radius: 20rpx;
+  background-color: #97d9e1;
+}
+.rent-box{
+  position: relative;
+  top: 20%;
+  /* background-color: chartreuse; */
+}
+.rent-container text{
+  display: block;
+  margin: 0 0 30rpx 30rpx;
+}
+.rent-container slider{
+  width: 92vw;
+}
+.rent-container button{
+  position: absolute;
+  width: 200rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  left: calc(50% - 100rpx);
+  top: 200rpx;
+  background-color: #309eaa;
+  border-radius: 20rpx;
 }
 .pulldown-hidden{
   display: none;
@@ -95,6 +128,7 @@ page{
 .filter-item{
   width: 25%;
   display: flex;
+  position: relative;
   color: #0d7377;
   justify-content: space-evenly;
   border-right: 1rpx solid #ccc;
