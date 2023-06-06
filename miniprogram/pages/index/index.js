@@ -22,7 +22,10 @@ Page({
     isMax: false,
     isRefresh: true,
     scrollTop: 0,
-    active: false
+    limitSex: [true, false, false, false],
+    limitSexList: ['默认', '限男生', '限女生', '不限男女'],
+    checkboxList: [[true, '默认'], [false, '可短租'], [false, '近地铁'], [false, '有阳台']],
+    selectedBox: {}
   },
 
   tempBtn(keyword){
@@ -175,6 +178,40 @@ Page({
   },
   rentConfirm(){
     this.setData({isPulldown: [false, false, false, false]})
+  },
+  selectPulldown(){
+    this.setData({isPulldown: [false, false, true, false]})
+  },
+  sexSelect(e){
+    this.data.selectedBox.sex = e.detail.value
+  },
+  radioClick(e){
+    const index = e.currentTarget.dataset.index;
+    const list = this.data.limitSex.map( (item, i) => {
+      if(i == index)
+        return true
+      else return false
+    })
+    this.setData({limitSex: list});
+  },
+  checkboxClick(e){
+    const index = e.currentTarget.dataset.index;
+    const list = this.data.checkboxList.map( (item, i) => {
+      if(i == index){
+        item[0] = !item[0];
+        return item
+      }
+      else return item
+    })
+    this.setData({checkboxList: list})
+    // console.log( e.currentTarget.dataset.index, list)
+  },
+  checkboxSelected(e){
+    this.data.selectedBox.rentType = e.detail.value
+  },
+  selectSubmit(){
+    // this.data.selectedBox.sex = 
+    console.log(this.data.selectedBox)
   },
   pulldownHidden(){
     this.setData({isPulldown: [false, false, false, false]});

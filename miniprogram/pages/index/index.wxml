@@ -27,7 +27,7 @@
         <view class="rent-box">
           <text class="section__title">租金：</text>
           <slider min="200" max="1500" backgroundColor="#3f989d" show-value></slider>  
-          <button catchtap="rentConfirm">确定</button>
+          <button class="confirm-btn" catchtap="rentConfirm">确定</button>
         </view>
       </view>
     </view>
@@ -36,8 +36,23 @@
       <view class="pulldown-icon">∟</view>
       <view class="{{isPulldown[2] ? '.select-container' : '.pulldown-hidden'}}">
         <view class="select-box">
-        <label for=""></label>
-          <switch type="checkbox"  bindchange="switch2Change"/>
+          <form class="select-radio" bindsubmit="selectSubmit">
+            <view class="radio-item">
+              <view class="select-lable">性别：</view>          
+              <radio-group bindchange="sexSelect">
+                <label wx:for="{{limitSexList}}" wx:key="index" for="{{index}}" class="{{limitSex[index] ? '.limit-sex-active' : ''}}" catchtap="radioClick" data-index="{{index}}"><radio value="{{item}}" name="sex"/>{{item}}</label>
+              </radio-group>
+            </view>
+            <view class="radio-item">
+              <view class="select-lable">类型：</view>
+              <checkbox-group bindchange="checkboxSelected">
+                <label catchtap="checkboxClick" data-index="{{index}}" wx:for="{{checkboxList}}" wx:key="index" class="{{item[0] ? '.limit-sex-active' : ''}}">
+                    <checkbox value="{{item[1]}}" checked="{{item[0]}}" name="{{item[1]}}"/>{{item[1]}}
+                </label>            
+              </checkbox-group>
+            </view>
+            <button class="confirm-btn"  form-type="submit">确定</button>
+          </form>
         </view>
       </view>
     </view>

@@ -57,20 +57,89 @@ page{
 .rent-container slider{
   width: 92vw;
 }
-.rent-container button{
-  position: absolute;
+.confirm-btn{
+  /* position: absolute; */
   width: 200rpx;
   height: 70rpx;
   line-height: 70rpx;
   left: calc(50% - 100rpx);
-  top: 200rpx;
   background-color: #309eaa;
   border-radius: 20rpx;
 }
-.pulldown-hidden{
+.select-container {
+  position: absolute;
+  width: 100vw;
+  height: 400rpx;
+  left: -50vw;
+  top: 60rpx;
+  border-radius: 20rpx;
+  background-color: #97d9e1;
+}
+.radio-item{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+
+}
+.radio-item radio-group{
+  display: flex;
+  justify-content: space-around;
+}
+.radio-item label{
+  position: relative;
+  padding: 10rpx 30rpx;
+  border-radius: 30rpx;
+  background-color: #EFF7F6;
+}
+.select-lable{
+  margin: 40rpx 0 20rpx 50rpx;
+}
+.select-radio .wx-radio-input{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: none;
+  opacity: 0;
+}
+.select-radio radio-group label:first-child{
+  margin-left: 5rpx;
+}
+.select-radio .wx-radio-input-checked::before{
+  width: 0;
+  height: 0;
   display: none;
 }
-
+radio-group .limit-sex-active{
+  background-color: #2EC4B6;
+}
+checkbox-group .limit-sex-active{
+  background-color: #2EC4B6;
+}
+.radio-item checkbox-group{
+  display: flex;
+  justify-content: space-around;
+}
+.select-radio .wx-checkbox-input{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: none;
+  opacity: 0;
+}
+.select-radio .wx-checkbox-input-checked::before{
+  width: 0;
+  height: 0;
+  display: none;
+}
+.pulldown-hidden{
+  display: none;
+  /* visibility: hidden; */
+}
+.select-box{
+   width: 90vw;
+   margin: 0 auto;
+}
 .left-box, .right-box{
   width: 50%;
   height: 100%;
