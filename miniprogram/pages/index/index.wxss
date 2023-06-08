@@ -66,10 +66,16 @@ page{
   background-color: #309eaa;
   border-radius: 20rpx;
 }
+.radio-btn{
+  margin-top: 100rpx;
+}
+.select-btn{
+  margin-top: 30rpx;
+}
 .select-container {
   position: absolute;
   width: 100vw;
-  height: 400rpx;
+  height: 430rpx;
   left: -50vw;
   top: 60rpx;
   border-radius: 20rpx;
@@ -131,6 +137,29 @@ checkbox-group .limit-sex-active{
   width: 0;
   height: 0;
   display: none;
+}
+.sort-container{
+  position: absolute;
+  width: 100vw;
+  /* height: 250rpx; */
+  left: -75vw;
+  top: 60rpx;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20rpx;
+  background-color: #97d9e1;
+}
+.sort-container view {
+  width: 90%;
+  height: 60rpx;
+  line-height: 50rpx;
+  font-size: 26rpx;
+  color: #036969;
+  margin: 20rpx auto 0 38rpx;
+  border-bottom: 1rpx solid rgb(74, 105, 109);
+}
+.sort-container view:last-child{
+  border: none;
 }
 .pulldown-hidden{
   display: none;

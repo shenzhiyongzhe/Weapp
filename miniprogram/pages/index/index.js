@@ -25,7 +25,9 @@ Page({
     limitSex: [true, false, false, false],
     limitSexList: ['默认', '限男生', '限女生', '不限男女'],
     checkboxList: [[true, '默认'], [false, '可短租'], [false, '近地铁'], [false, '有阳台']],
-    selectedBox: {}
+    selectedBox: {},
+    sortList: ['默认排序', '时间最新', '价格最低'],
+    slider: 0
   },
 
   tempBtn(keyword){
@@ -176,10 +178,20 @@ Page({
   rentPulldown(){
     this.setData({isPulldown: [false, true, false, false]})
   },
+  sliderEvent(e){
+    this.data.slider = e.detail.value
+  },
   rentConfirm(){
+    const rent = this.data.slider;
+    db.collection('list').where({
+      rent: _.lt(rent)
+    })
+    .get().then(res => this.setData({list: res.data }))
+    // console.log(rent, typeof rent)
     this.setData({isPulldown: [false, false, false, false]})
   },
   selectPulldown(){
+
     this.setData({isPulldown: [false, false, true, false]})
   },
   sexSelect(e){
@@ -212,6 +224,9 @@ Page({
   selectSubmit(){
     // this.data.selectedBox.sex = 
     console.log(this.data.selectedBox)
+  },
+  sortPulldown(){
+    this.setData({isPulldown: [false, false, false, true]})
   },
   pulldownHidden(){
     this.setData({isPulldown: [false, false, false, false]});

@@ -101,9 +101,11 @@ Page({
     const avatar = wx.getStorageSync('avatar');
     const nickname = wx.getStorageSync('nickname');
     const location = this.data.location;
-    const time = new Date().toLocaleString()
+    const time = new Date().toLocaleString();
+    const {title, sex, description} = e.detail.value;
+    const rent = Number(e.detail.value.rent)
     db.add({
-      data: {...e.detail.value, list, time, location, userInfo: {nickname, avatar}},
+      data: {title, sex, description, rent, list, time, location, userInfo: {nickname, avatar}},
       success: res => {
         wx.hideLoading();
         console.log("post success!", res)
