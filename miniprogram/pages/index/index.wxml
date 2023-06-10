@@ -60,7 +60,7 @@
       <view>排序</view>
       <view class="pulldown-icon">∟</view>
       <view class="{{isPulldown[3] ? '.sort-container' : '.pulldown-hidden'}}">
-        <view wx:for="{{sortList}}" wx:key="index">{{item}}</view>
+        <view wx:for="{{sortList}}" wx:key="index" catchtap="sortEvent" data-index="{{index}}">{{item}}</view>
       </view>
     </view>
   </view>
@@ -91,7 +91,7 @@
             <image src="{{item.userInfo.avatar}}" class="userAvatar"></image>
             <view class="nickName-box">
               <view class="nickname">{{item.userInfo.nickname}}</view>
-              <view class="updateTime">3小时前发布</view>
+              <view class="updateTime">{{item.time}}</view>
             </view>      
         </view>
       </view>
@@ -115,7 +115,7 @@
     </view>
   </view>
 </scroll-view>
-<!-- <button catchtap="tempBtn" class="test-btn">回到顶部</button> -->
+<button catchtap="tempBtn" class="test-btn">回到顶部</button>
 
 <!-- <view catchtap="getValue" style="background-color: aqua; z-index: 10;">hello</view> -->
 

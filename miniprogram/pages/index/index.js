@@ -1,4 +1,5 @@
 // index.js
+import formatTime from '../../utils/formatTime.js'
 const db = wx.cloud.database();
 const _ = db.command;
 Page({
@@ -14,8 +15,10 @@ Page({
     ],
     randNum: Math.random(),
     keyword: '',
+    refreshFlag: [false, false, false, false],
     userInfo: {},
     list: [],
+    copyList: [],
     pageIndex: 0,
     pageSize: 5,
     maxCount: 0,
@@ -30,9 +33,91 @@ Page({
     slider: 0
   },
 
-  tempBtn(keyword){
-    this.getList()
-    console.log(this.data.pageIndex)
+  tempBtn(){
+    const data = {}
+    this.queryData(data)
+  },
+    // 获取房子的列表信息
+  getList() {
+    const { pageIndex, pageSize, maxCount, list } = this.data;
+    if (pageIndex * pageSize < maxCount)
+      db.collection('list').limit(pageSize).skip(pageSize * pageIndex).get()
+      .then(res => {
+        this.data.pageIndex++;
+        const postList = res.data.map(item => {
+          item.time = formatTime(item.time);
+          return item
+        })
+        this.setData({
+          list: list.concat(postList)
+        })
+      })
+    else return false
+  },
+  // 查询信息
+  queryData({keyword='', rent=1500, order={filde: '_id', by: 'asc'}}){
+    const {pageIndex, pageSize, list} = this.data;
+    db.collection('list').limit(pageSize).where(_.or([
+      {'location.address': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
+      {title: db.RegExp({regexp: '.*' + keyword})},
+      {description: db.RegExp({regexp: '.*' + keyword})},
+      {rent: _.lt(rent)}
+    ]))
+    .orderBy(order.filde, order.by)
+    .skip(pageSize * pageIndex).get().then(res => {
+      this.data.pageIndex++;
+
+      console.log('return data', res.data)
+    }) 
+    console.log(keyword, rent, order)
+  },
+  //关键字搜索
+  Search(keyword){
+    const {pageIndex, pageSize} = this.data;
+    return new Promise( resolve => {  
+      db.collection('list').limit(pageSize).where(_.or([
+        {'location.address': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
+        {title: db.RegExp({regexp: '.*' + keyword})},
+        {description: db.RegExp({regexp: '.*' + keyword})}
+      ]))
+      .skip(pageSize * pageIndex).get().then(res => {
+        this.data.pageIndex++;
+        // console.log('return data', res.data)
+        resolve(res.data)
+      }) 
+    })
+  },
+  //排序
+  sortBy(key, order="asc"){
+    const {pageIndex, pageSize, list} = this.data;
+    db.collection('list')
+      .orderBy(key, order)
+      .skip(pageIndex * pageSize)
+      .limit(pageSize)
+      .get()
+      .then(res => {
+        this.data.pageIndex++;
+        const postList = res.data.map(item => {
+          item.time = formatTime(item.time);
+          return item
+        })
+        console.log("pageSize", pageSize,postList)
+        this.setData({
+          list: list.concat(postList)
+        });
+      });
+  },
+  sortEvent(e){
+    const index = e.target.dataset.index;
+    this.setData({pageIndex: 0, list: []});
+    switch(index){
+      case 0: this.getList(); break;
+      case 1: this.sortBy("time", "desc"); break;
+      case 2: this.sortBy("rent", "asc"); break;
+      default: console.log("maybe something wrong!")
+    }
+
+
   },
   //下拉刷新
   async pullDownRefresh(){
@@ -52,39 +137,10 @@ Page({
   },
   //触底加载
   async reachBottomLoad(){
-    if(this.data.keyword){
-      if(this.data.isMax == false)
-      {
-        const data = await this.Search(this.data.keyword);
-        if(!data[0]) 
-          this.setData({isMax: true})
-        else 
-          this.setData({list: [...this.data.list, ...data]})
-        // console.log(data[0])
-      }
-    else
-      console.log('search no more data')
-    } 
-    else 
-      this.getList()
-      // console.log("default get list")
+
+ 
   },
-  //关键字搜索
-  Search(keyword){
-    const {pageIndex, pageSize} = this.data;
-    return new Promise( resolve => {  
-      db.collection('list').limit(pageSize).where(_.or([
-        {'location.address': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
-        {title: db.RegExp({regexp: '.*' + keyword})},
-        {description: db.RegExp({regexp: '.*' + keyword})}
-      ]))
-      .skip(pageSize * pageIndex).get().then(res => {
-        this.data.pageIndex++;
-        // console.log('return data', res.data)
-        resolve(res.data)
-      }) 
-    })
-  },
+
   //搜索框搜索
   async inputSearch(e){
     const keyword = e.detail.value;
@@ -95,8 +151,6 @@ Page({
       return console.log("there is no information about this keyword")
     else 
       this.setData({list: [...this.data.list, ...data]})
-
-    // console.log(data)
   },
   //下拉菜单 区域的点击事件
   async districtClick(e){
@@ -115,9 +169,7 @@ Page({
       else 
         this.setData({list: [ ...this.data.list, ...data]})
         // console.log(data[0])
-      
     this.setData({isPulldown: false})
-
   },
 
     // 获取用户唯一表示和登录认证
@@ -139,19 +191,6 @@ Page({
         },
       })
     },
-  // 获取房子的列表信息
-  getList(){
-    const {pageIndex, pageSize, maxCount, list} = this.data;
-    if(pageIndex * pageSize < maxCount) 
-      db.collection('list').limit(pageSize).skip(pageSize * pageIndex).get()
-        .then(res => { 
-          this.data.pageIndex++;
-          this.setData({ list : list.concat(res.data)})
-        })
-    
-    else return false
-  },
-
   // 获取用户头像和昵称
   getUserInfo(){
     wx.getUserInfo({
@@ -162,7 +201,6 @@ Page({
       }
     })
   },
-
   // 动画
   regionPulldown(){
     this.setData({"isPulldown[0]": !this.data.isPulldown[0], display: 'block'});
@@ -228,6 +266,7 @@ Page({
   sortPulldown(){
     this.setData({isPulldown: [false, false, false, true]})
   },
+
   pulldownHidden(){
     this.setData({isPulldown: [false, false, false, false]});
   },

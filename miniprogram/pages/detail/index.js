@@ -1,6 +1,5 @@
 // pages/detail/index.js
 // const content = '';
-
 Page({
 
   /**

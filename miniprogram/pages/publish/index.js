@@ -101,7 +101,7 @@ Page({
     const avatar = wx.getStorageSync('avatar');
     const nickname = wx.getStorageSync('nickname');
     const location = this.data.location;
-    const time = new Date().toLocaleString();
+    const time = new Date().getTime();
     const {title, sex, description} = e.detail.value;
     const rent = Number(e.detail.value.rent)
     db.add({
