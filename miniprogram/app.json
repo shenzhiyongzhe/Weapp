@@ -3,7 +3,9 @@
     "pages/index/index",
     "pages/publish/index",
     "pages/my/index",
-    "pages/description/index"
+    "pages/description/index",
+    "pages/detail/index",
+    "pages/posted/index"
   ],
 
   "tabBar": {
