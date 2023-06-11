@@ -3,7 +3,7 @@
     <view>深圳市</view>
     <view class="input-box">
       <icon type="search" size="14" />
-      <input type="text" bindconfirm="inputSearch" maxlength="10" placeholder="请输入关键字" confirm-type="search" />
+      <input type="text" bindconfirm="inputSearch" value="{{queryFilde.keyword}}" maxlength="10" placeholder="请输入关键字" confirm-type="search" />
       <view class="input-clear">+</view>
     </view>
   </view>

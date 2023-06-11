@@ -14,14 +14,12 @@ Page({
       [["租金"], [500, 800, 1000, 1200, 1500]]
     ],
     randNum: Math.random(),
-    keyword: '',
+    queryField: {},
     refreshFlag: [false, false, false, false],
     userInfo: {},
     list: [],
-    copyList: [],
     pageIndex: 0,
     pageSize: 5,
-    maxCount: 0,
     isMax: false,
     isRefresh: true,
     scrollTop: 0,
@@ -30,62 +28,111 @@ Page({
     checkboxList: [[true, '默认'], [false, '可短租'], [false, '近地铁'], [false, '有阳台']],
     selectedBox: {},
     sortList: ['默认排序', '时间最新', '价格最低'],
-    slider: 0
+    sortFlag: ['default', 'sortByLatest', 'sortByCheapest'],
+    slider: 0,
+    loadFlag: 'default'
   },
 
   tempBtn(){
-    const data = {}
-    this.queryData(data)
+  this.getList()
   },
     // 获取房子的列表信息
   getList() {
-    const { pageIndex, pageSize, maxCount, list } = this.data;
-    if (pageIndex * pageSize < maxCount)
-      db.collection('list').limit(pageSize).skip(pageSize * pageIndex).get()
-      .then(res => {
-        this.data.pageIndex++;
+    const { pageIndex, pageSize, list} = this.data;
+    db.collection('list').limit(pageSize).skip(pageSize * pageIndex).get()
+    .then(res => {
+      this.data.pageIndex++;
+      if(res.data.length === 0)
+        this.data.isMax = true
+      else {
         const postList = res.data.map(item => {
           item.time = formatTime(item.time);
           return item
-        })
-        this.setData({
-          list: list.concat(postList)
-        })
-      })
-    else return false
+        });        
+        this.setData({list: list.concat(postList)})    
+      }
+    })
   },
   // 查询信息
-  queryData({keyword='', rent=1500, order={filde: '_id', by: 'asc'}}){
+  queryData({keyword='', sex='', rent=1500, order={Field: '_id', by: 'asc'}}){
     const {pageIndex, pageSize, list} = this.data;
     db.collection('list').limit(pageSize).where(_.or([
       {'location.address': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
       {title: db.RegExp({regexp: '.*' + keyword})},
       {description: db.RegExp({regexp: '.*' + keyword})},
-      {rent: _.lt(rent)}
-    ]))
-    .orderBy(order.filde, order.by)
+    ]), _.and([{rent: _.lt(rent)}, {sex: sex}]))
+    .orderBy(order.Field, order.by)
     .skip(pageSize * pageIndex).get().then(res => {
       this.data.pageIndex++;
-
-      console.log('return data', res.data)
+      if(res.data.length > 0){
+        const postList = res.data.map(item => {
+          item.time = formatTime(item.time);
+          return item
+        })
+        this.setData({list: list.concat(postList)})
+        console.log('return data', res.data)
+      }
+      else
+        this.data.isMax = true
     }) 
-    console.log(keyword, rent, order)
   },
-  //关键字搜索
-  Search(keyword){
-    const {pageIndex, pageSize} = this.data;
-    return new Promise( resolve => {  
-      db.collection('list').limit(pageSize).where(_.or([
-        {'location.address': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
-        {title: db.RegExp({regexp: '.*' + keyword})},
-        {description: db.RegExp({regexp: '.*' + keyword})}
-      ]))
-      .skip(pageSize * pageIndex).get().then(res => {
-        this.data.pageIndex++;
-        // console.log('return data', res.data)
-        resolve(res.data)
-      }) 
-    })
+    //触底加载
+    async reachBottomLoad(){
+      const {isMax, queryField, loadFlag} = this.data;
+      console.log("isMax:", isMax)
+      if(isMax == false){
+        switch(loadFlag){
+          case 'default':
+            this.getList(); break;
+          case 'keyword':
+            this.queryData(queryField); break;
+          case 'sortByLatest':
+            this.sortBy("time", "desc"); break;
+          case 'sortByCheapest':
+            this.sortBy("rent", "asc"); break;
+          default : this.getList();
+        }
+      }
+      else
+        return console.log('data is load out')
+    },
+  //搜索框搜索
+  async inputSearch(e){
+    this.data.queryField.keyword = e.detail.value;
+    this.data.pageIndex = 0;
+    this.data.list = [];
+    this.data.isMax = false;
+    const data = await this.queryData(this.data.queryField);
+    if(data){
+      this.setData({list: this.data.list.concat(data)})
+    }
+    else
+      return console.log("inputSearch: no data")
+  },
+  //下拉菜单 区域的点击事件
+  async districtClick(e){
+    const index = e.target.dataset.index
+    const item = this.data.filterItem[0][1][index]
+    this.setData({region: item, list: []});
+    this.data.queryField.keyword =  item;
+    this.data.pageIndex = 0;
+    const data = await this.queryData(this.data.queryField);
+    if(data) 
+      this.setData({list: [ ...this.data.list, ...data]})
+    else 
+      return console.log('District: no data')
+    this.setData({isPulldown: false})
+  },
+  // 租金区间筛选
+  async rentConfirm(){
+    this.data.queryField.rent = this.data.slider;
+    const data = await this.queryData(this.data.queryField)
+    // if(data) 
+    //   this.setData({list: [ ...this.data.list, ...data]})
+    // else 
+    //   return console.log('Rent: no data')
+    console.log("rent data:",data)
+    this.setData({isPulldown: [false, false, false, false]})
   },
   //排序
   sortBy(key, order="asc"){
@@ -97,18 +144,24 @@ Page({
       .get()
       .then(res => {
         this.data.pageIndex++;
-        const postList = res.data.map(item => {
-          item.time = formatTime(item.time);
-          return item
-        })
-        console.log("pageSize", pageSize,postList)
-        this.setData({
-          list: list.concat(postList)
-        });
+        if(res.data.length == 0)
+          {
+            this.data.isMax = true;
+            return console.log("sort: no data")
+          }
+        else {
+          const postList = res.data.map(item => {
+            item.time = formatTime(item.time);
+            return item
+          })
+          this.setData({list: list.concat(postList)});
+        }
       });
   },
   sortEvent(e){
     const index = e.target.dataset.index;
+    this.data.loadFlag = this.data.sortFlag[index];
+    this.data.isMax = false;
     this.setData({pageIndex: 0, list: []});
     switch(index){
       case 0: this.getList(); break;
@@ -116,9 +169,8 @@ Page({
       case 2: this.sortBy("rent", "asc"); break;
       default: console.log("maybe something wrong!")
     }
-
-
   },
+
   //下拉刷新
   async pullDownRefresh(){
     const list = await this.getList();
@@ -133,74 +185,9 @@ Page({
     wx.navigateTo({
       url: `/pages/detail/index?detail=${encodeURIComponent(JSON.stringify(e.currentTarget.dataset.detail))}`,
     })
-    // console.log(e.currentTarget.dataset.detail)
-  },
-  //触底加载
-  async reachBottomLoad(){
-
- 
   },
 
-  //搜索框搜索
-  async inputSearch(e){
-    const keyword = e.detail.value;
-    console.log(keyword)
-    this.setData({keyword, pageIndex: 0, isMax: false, list: []})
-    const data = await this.Search(keyword);
-    if(!data[0]) 
-      return console.log("there is no information about this keyword")
-    else 
-      this.setData({list: [...this.data.list, ...data]})
-  },
-  //下拉菜单 区域的点击事件
-  async districtClick(e){
-    const index = e.target.dataset.index
-    const item = this.data.filterItem[0][1][index]
-    this.setData({ 
-      region: item,
-      keyword: item,
-      pageIndex: 0,
-      list: [],
-      active: true
-    });
-      const data = await this.Search(item);
-      if(!data[0]) 
-        return console.log('there is no information in this location')
-      else 
-        this.setData({list: [ ...this.data.list, ...data]})
-        // console.log(data[0])
-    this.setData({isPulldown: false})
-  },
 
-    // 获取用户唯一表示和登录认证
-    async getUserOpenId() {
-      wx.login({
-        success: (res) => {
-          //  console.log(res);
-          wx.request({
-            url: 'https://api.weixin.qq.com/sns/jscode2session',
-            method: 'GET',
-            data: {
-              appid: 'wxa09251f5028d3bf0',
-              secret: '8c099e637711aac11ca7696b8950532a',
-              js_code: res.code,
-              grant_type: 'authorization_code',
-            },
-            success: res => wx.setStorageSync('openid', res.data.openid)
-          })
-        },
-      })
-    },
-  // 获取用户头像和昵称
-  getUserInfo(){
-    wx.getUserInfo({
-      success: res => {
-        var {avatarUrl, nickName, gender,} = res.userInfo
-        this.setData({userInfo: {avatarUrl, nickName, gender}})
-        // console.log(this.data.userInfo)
-      }
-    })
-  },
   // 动画
   regionPulldown(){
     this.setData({"isPulldown[0]": !this.data.isPulldown[0], display: 'block'});
@@ -219,15 +206,7 @@ Page({
   sliderEvent(e){
     this.data.slider = e.detail.value
   },
-  rentConfirm(){
-    const rent = this.data.slider;
-    db.collection('list').where({
-      rent: _.lt(rent)
-    })
-    .get().then(res => this.setData({list: res.data }))
-    // console.log(rent, typeof rent)
-    this.setData({isPulldown: [false, false, false, false]})
-  },
+
   selectPulldown(){
 
     this.setData({isPulldown: [false, false, true, false]})
@@ -259,9 +238,9 @@ Page({
   checkboxSelected(e){
     this.data.selectedBox.rentType = e.detail.value
   },
-  selectSubmit(){
+  selectSubmit(e){
     // this.data.selectedBox.sex = 
-    console.log(this.data.selectedBox)
+    console.log(e)
   },
   sortPulldown(){
     this.setData({isPulldown: [false, false, false, true]})
@@ -276,8 +255,6 @@ Page({
     
   },
   async onLoad(){
-   
-    this.data.maxCount = (await db.collection('list').count()).total;
     this.getList();
   },
 

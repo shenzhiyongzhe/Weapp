@@ -1,49 +1,64 @@
-// import { createStoreBindings } from 'mobx-miniprogram-bindings'
-// import { store } from '../../store/store'
-// const app = getApp()
 
+const db = wx.cloud.database();
 
 Page({
   data:{
     isLogin: true,
-    nickname: '',
-    avatar: '',
+    userAvatar: '',
+    userNickname: '',
     avatarfileID: '',
   },
   onLoad(options) {
-    this.autoLoadUserinfo();
+    const userAvatar = wx.getStorageSync('userAvatar');
+    const userNickname = wx.getStorageSync('userNickname');
+    if(userAvatar && userNickname)
+      this.setData({userAvatar: wx.getStorageSync('userAvatar'), userNickname: wx.getStorageSync('userNickname')})
   },
   navToPublish(){
-    wx.navigateTo({
-      url: '/pages/publish/index',
-    });
-    console.log("to page/publish")
+    const {userAvatar, userNickname} = this.data;
+    if(userAvatar && userNickname)
+      wx.navigateTo({
+        url: '/pages/publish/index',
+      });
+    else if(userAvatar)
+      wx.showToast({
+        title: '请输入一个昵称',
+        icon: 'none'
+      })
+    else
+      wx.showToast({
+        title: '请选择一个头像',
+        icon: 'none'
+      })
   },
-  autoLoadUserinfo(){
-    this.setData({avatar: wx.getStorageSync('avatar'), nickname: wx.getStorageSync('nickname')})
+  async navToPosted(){
+    const openid = await this.getUserOpenId();
+    wx.setStorageSync('openid', openid);
+    wx.navigateTo({
+        url: `/pages/posted/index?openid=${openid}`,
+      })
+  
   },
   async onChooseAvatar(e){
     const avatar = e.detail.avatarUrl;
-    this.setData({avatar});
+    this.setData({userAvatar: avatar});
     const fileID = await this.uploadAvatar(avatar);
     const url = await this.getAvatarUrl(fileID);
-    wx.setStorageSync('avatar', url[0].tempFileURL)
-    console.log(url[0].tempFileURL)
+    wx.setStorageSync('userAvatar', url[0].tempFileURL)
+    console.log(wx.getStorageSync('userAvatar'))
   },
   onChangeNickName(e){
     wx.createSelectorQuery()
-  .select(".user-nickname")
-  .fields({
-    properties: ["value"],
-  })
-  .exec((res) => {
-    const nickname = res[0].value;
-    // 处理nickname
-    wx.setStorageSync('nickname', nickname);
-    this.setData({nickname})
-    // console.log(wx.getStorageSync('nickname'))
-  });
-    //  
+    .select(".user-nickname")
+    .fields({
+      properties: ["value"],
+    })
+    .exec((res) => {
+      const userNickname = res[0].value;
+      wx.setStorageSync('userNickname', userNickname);
+      this.setData({userNickname});
+      console.log(wx.getStorageInfoSync('userNickname'))
+    });
   },
 
   // 上传头像并返回头像文件ID
@@ -52,10 +67,7 @@ Page({
        wx.cloud.uploadFile({
         cloudPath: 'avatar' + '/' + new Date().toLocaleString() +  '.jpeg',
         filePath: e,
-        success: res => {
-          // console.log(res)
-          resolve(res.fileID)
-        }
+        success: res => resolve(res.fileID)
       })
     })
   },
@@ -71,13 +83,29 @@ Page({
       })
     })
   },
+    // 获取用户唯一表示和登录认证
+    getUserOpenId() {
+      return new Promise( resolve => {
+        wx.login({
+          success: (res) => {
+            wx.request({
+              url: 'https://api.weixin.qq.com/sns/jscode2session',
+              method: 'GET',
+              data: {
+                appid: 'wxa09251f5028d3bf0',
+                secret: '8c099e637711aac11ca7696b8950532a',
+                js_code: res.code,
+                grant_type: 'authorization_code',
+              },
+              success: res => resolve(res.data.openid)
+            })
+          },
+        })
+      })
+    },
 
  async test(){
    console.log(wx.getStorageSync('avatar'))
   },
 
-
-  onUnload() {
-    // this.storeBindings.destoryStoreBindings()
-  }
 })
