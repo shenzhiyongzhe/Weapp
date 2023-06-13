@@ -7,67 +7,56 @@ Page({
    * 页面的初始数据
    */
   data: {
+    pageIndex: 0,
+    pageSize: 5,
+    maxCount: 0,
     openid: wx.getStorageSync('openid'),
     list: []
   },
+  getMaxCount(openid){
+    db.collection('list').where({_openid: openid}).count().then(res => this.setData({maxCount: res.total}))
+  },
+  getPosted(){
+    const {pageIndex, pageSize, maxCount} = this.data;
+    console.log(maxCount)
 
+    if(pageIndex * pageSize < maxCount)
+      db.collection('list').limit(10).where({_openid: this.data.openid}).get().then(res => {
+        this.setData({list: this.data.list.concat(res.data)})
+    })
+    else 
+      wx.showToast({
+        title: '暂无数据',
+        icon: 'none'
+      });
+  },
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad(options) {
-    db.collection('list').limit(10).where({_openid: this.data.openid}).get().then(res => {
-      this.setData({list: this.data.list.concat(res.data)})
-      console.log(res.data)
-    })
-
+    const openid = options.openid;
+    this.getMaxCount(openid);
+    this.getPosted()
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-
+  //触底加载
+  async reachBottomLoad(){
+    const {isMax, queryField, loadFlag} = this.data;
+    console.log("isMax:", isMax)
+    if(isMax == false){
+      switch(loadFlag){
+        case 'default':
+          this.getList(); break;
+        case 'keyword':
+          this.queryData(queryField); break;
+        case 'sortByLatest':
+          this.sortBy("time", "desc"); break;
+        case 'sortByCheapest':
+          this.sortBy("rent", "asc"); break;
+        default : this.getList();
+      }
+    }
+    else
+      return console.log('data is load out')
   },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面卸载
-   */
-  onUnload() {
-
-  },
-
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
 })

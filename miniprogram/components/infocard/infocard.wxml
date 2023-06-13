@@ -1,24 +1,18 @@
-<scroll-view class="list-view"	
-  bindscrolltolower="reachBottomLoad" scroll-y="true" 
-  enable-back-to-top="{{true}}"
- >
- <view class="rentInfo-container" wx:for="{{list}}" wx:key="_id" bindtap="navToPageDetail" data-detail="{{item}}">
+<view class="rentInfo-container" wx:for="{{list}}" wx:key="_id" bindtap="navToPageDetail" data-detail="{{item}}">
     <!-- 上面用户的盒子 -->
     <view class="topbox">
-      <view class="userBox">
-        <view class="userInfo-box">
-            <image src="{{item.userInfo.avatar}}" class="userAvatar"></image>
-            <view class="nickName-box">
-              <view class="nickname">{{item.userInfo.nickname}}</view>
-              <view class="updateTime">{{item.time}}</view>
-            </view>      
-        </view>
+      <view class="userInfo-box">
+          <image src="{{item.userInfo.avatar}}" class="userAvatar"></image>
+          <view class="nickName-box">
+            <view class="nickname">{{item.userInfo.nickname}}</view>
+            <view class="updateTime">{{item.time}}</view>
+          </view>      
       </view>
       <view class="charge-container"><view class="charge-box">租金：{{item.rent}}</view></view>
     </view>
     <!-- 中间的盒子 -->
     <view class="midbox">
-      <view class="title-container">
+      <view class="title-box">
         <!-- <text class="tag">整租ww</text> -->
         {{item.title}}{{item.description}}</view>
       <view class="imgbox">
@@ -29,8 +23,10 @@
     </view>
     <!-- 下面详细地址的盒子 -->
     <view class="bottombox">
+      <view class="position">
+        <view><image src="../../img/location.png"/></view>
+        <view>{{item.location.name}}</view>
+      </view>
       <view class="addressName">{{item.location.address}}</view>
-      <view class="position">{{item.location.name}}</view>
     </view>
   </view>
-</scroll-view>

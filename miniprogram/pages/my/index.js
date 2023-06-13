@@ -4,23 +4,23 @@ const db = wx.cloud.database();
 Page({
   data:{
     isLogin: true,
-    userAvatar: '',
-    userNickname: '',
+    avatar: '',
+    nickname: '',
     avatarfileID: '',
   },
   onLoad(options) {
-    const userAvatar = wx.getStorageSync('userAvatar');
-    const userNickname = wx.getStorageSync('userNickname');
-    if(userAvatar && userNickname)
-      this.setData({userAvatar: wx.getStorageSync('userAvatar'), userNickname: wx.getStorageSync('userNickname')})
+    const avatar = wx.getStorageSync('avatar');
+    const nickname = wx.getStorageSync('nickname');
+    if(avatar && nickname)
+      this.setData({avatar: wx.getStorageSync('avatar'), nickname: wx.getStorageSync('nickname')})
   },
   navToPublish(){
-    const {userAvatar, userNickname} = this.data;
-    if(userAvatar && userNickname)
+    const {avatar, nickname} = this.data;
+    if(avatar && nickname)
       wx.navigateTo({
         url: '/pages/publish/index',
       });
-    else if(userAvatar)
+    else if(avatar)
       wx.showToast({
         title: '请输入一个昵称',
         icon: 'none'
@@ -32,20 +32,25 @@ Page({
       })
   },
   async navToPosted(){
-    const openid = await this.getUserOpenId();
-    wx.setStorageSync('openid', openid);
-    wx.navigateTo({
+    if(wx.getStorageSync('openid'))
+      wx.navigateTo({
+          url: '/pages/posted/index',
+        })
+    else{
+      const openid = await this.getUserOpenId();
+      wx.setStorageSync('openid', openid);
+      wx.navigateTo({
         url: `/pages/posted/index?openid=${openid}`,
       })
+    }
   
   },
   async onChooseAvatar(e){
     const avatar = e.detail.avatarUrl;
-    this.setData({userAvatar: avatar});
+    this.setData({avatar});
     const fileID = await this.uploadAvatar(avatar);
     const url = await this.getAvatarUrl(fileID);
-    wx.setStorageSync('userAvatar', url[0].tempFileURL)
-    console.log(wx.getStorageSync('userAvatar'))
+    wx.setStorageSync('avatar', url[0].tempFileURL)
   },
   onChangeNickName(e){
     wx.createSelectorQuery()
@@ -54,10 +59,9 @@ Page({
       properties: ["value"],
     })
     .exec((res) => {
-      const userNickname = res[0].value;
-      wx.setStorageSync('userNickname', userNickname);
-      this.setData({userNickname});
-      console.log(wx.getStorageInfoSync('userNickname'))
+      const nickname = res[0].value;
+      wx.setStorageSync('nickname', nickname);
+      this.setData({nickname});
     });
   },
 

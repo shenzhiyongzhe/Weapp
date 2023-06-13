@@ -1,45 +1,33 @@
 .rentInfo-container{
   width: 100vw;
-  height: 400rpx;
   margin-top: 15rpx;
+  padding: 20rpx 20rpx 10rpx 20rpx;
   background-color: white;
+  box-sizing: border-box;
+  font-size: 26rpx;
 }
 .topbox{
-  height: 100rpx;
-  width: 100vw;
   display: flex;
   justify-content: space-between;
 }
-.userBox{
-  display: flex;
-  justify-content: center;
-  width: 50%;
-  height: 100rpx;
-  /* background-color: rgb(223, 187, 208); */
-}
 .userInfo-box{
   display: flex;
-  width: 100%;
-  padding: 0 20rpx;
 }
-
 .userAvatar{
   width: 100rpx;
   height: 100rpx;
   border-radius: 100rpx;
-  /* background-color: rgb(146, 138, 216); */
 }
 .nickName-box{
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   width: 150rpx;
-  margin-left: 20rpx;
+  margin-left: 14rpx;
 }
 .nickname{
   overflow: hidden;
   font-weight: bold;
-  font-size: 26rpx;
   color: rgb(124, 122, 122);
 }
 .updateTime{
@@ -47,37 +35,22 @@
   color: rgb(173, 173, 173);
 }
 .charge-container{
-  width: 25%;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-right: 10rpx;
-  /* background-color: rgb(111, 152, 212); */
 }
 .charge-box{
-  /* background-color: #ccc; */
   padding: 10rpx;
   font-size: 24rpx;
   border: 1rpx solid rgb(136, 130, 130);
   border-radius: 30rpx;
 }
-/* 中间盒子 */
-.midbox{
-  height: 250rpx;
-  /* display: flex; */
-  /* background-color: rgb(221, 233, 117); */
-}
-.title-container{
-  height: 70rpx;
-  padding: 10rpx 20rpx;
+.title-box{
+  margin: 10rpx 0;
+  display: -webkit-box;
   overflow: hidden;
   -webkit-line-clamp: 2;
-  text-overflow: ellipsis;
-  display: -webkit-box;
   -webkit-box-orient: vertical;
-  font-size: 26rpx;
-  font-weight: 549;
-  line-height: 40rpx;
 }
 .tag{
   padding: 8rpx 10rpx 8rpx 10rpx;
@@ -86,9 +59,6 @@
   line-height: 20rpx;
   background-color: rgb(98, 182, 176);
 }
-.imgbox{
-  padding: 10rpx 20rpx;
-}
 .img{
   width: 150rpx; 
   height: 150rpx;
@@ -96,10 +66,37 @@
 }
 /* 下面的盒子 */
 .bottombox{
-  height: 50rpx;
+  max-height: 40rpx;
   display: flex;
-  justify-content: space-between;
-  padding: 0 20rpx;
+  line-height: 40rpx;
   font-size: 22rpx;
-  /* background-color: rgb(240, 194, 95); */
+}
+.position{
+  flex: 2;
+  display: flex;
+  color: #42be9e;
+}
+.position view:first-child{
+  display: flex;
+  align-items: center;
+}
+.position view:last-child{
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+}
+.position image{
+  width: 30rpx;
+  height: 30rpx;
+}
+
+.addressName{
+  flex: 3;
+  text-align: right;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
 }

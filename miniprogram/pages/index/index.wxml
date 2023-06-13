@@ -70,51 +70,18 @@
 
 <!-- 辅助元素，用于点击取消下拉菜单的显示 -->
 <view class="{{isPulldown[0] || isPulldown[1] || isPulldown[2] || isPulldown[3] ? '.mask': '.mask-hidden'}}" catchtap="pulldownHidden"></view>
-<!-- 房租信息卡片展示 -->
-<scroll-view class="list-view"	
-  bindscrolltolower="reachBottomLoad" scroll-y="true" 
-  refresher-enabled="{{true}}"
-  enable-back-to-top="{{true}}"
-  refresher-enabled="{{true}}"
-  refresher-threshold="{{80}}"
-  refresher-triggered="{{isRefresh}}"
+<scroll-view
+  class="list-view"
+  scroll-y="{{true}}"
+  bindscrolltolower="reachBottomLoad"
   scroll-top="{{scrollTop}}"
-  refresher-background="lightgreen"
-  bindrefresherrefresh="pullDownRefresh"
- >
-  <!-- <view class="blankTip ">没有数据</view> -->
-  <view class="rentInfo-container" wx:for="{{list}}" wx:key="_id" bindtap="navToPageDetail" data-detail="{{item}}">
-    <!-- 上面用户的盒子 -->
-    <view class="topbox">
-      <view class="userBox">
-        <view class="userInfo-box">
-            <image src="{{item.userInfo.avatar}}" class="userAvatar"></image>
-            <view class="nickName-box">
-              <view class="nickname">{{item.userInfo.nickname}}</view>
-              <view class="updateTime">{{item.time}}</view>
-            </view>      
-        </view>
-      </view>
-      <view class="charge-container"><view class="charge-box">租金：{{item.rent}}</view></view>
-    </view>
-    <!-- 中间的盒子 -->
-    <view class="midbox">
-      <view class="title-container">
-        <!-- <text class="tag">整租ww</text> -->
-        {{item.title}}{{item.description}}</view>
-      <view class="imgbox">
-        <block wx:for="{{item.list}}" wx:for-item="url" wx:key="index">
-          <image class="img" src="{{url}}" mode="aspectFill"/>
-        </block>
-      </view>
-    </view>
-    <!-- 下面详细地址的盒子 -->
-    <view class="bottombox">
-      <view class="addressName">{{item.location.address}}</view>
-      <view class="position">{{item.location.name}}</view>
-    </view>
-  </view>
+  enable-back-to-top="{{true}}"
+  enhanced
+  show-scrollbar="{{false}}"
+>
+  <InfoCard list="{{list}}"/>
 </scroll-view>
+
 <button catchtap="tempBtn" class="test-btn">回到顶部</button>
 
 <!-- <view catchtap="getValue" style="background-color: aqua; z-index: 10;">hello</view> -->

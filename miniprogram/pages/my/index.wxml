@@ -1,7 +1,14 @@
 <view class="container">
   <view class="userinfo">
-      <button open-type="chooseAvatar" id="userinfo-avatar" bind:chooseavatar="onChooseAvatar" ><image src="{{userAvatar}}"></image></button>
-      <input type="nickname" class="user-nickname" placeholder="请输入昵称" value="{{userNickname}}" bindblur="onChangeNickName"/>
+      <button open-type="chooseAvatar" id="userinfo-avatar" bind:chooseavatar="onChooseAvatar" >
+        <block wx:if="{{avatar}}">
+          <image src="{{avatar}}"></image>      
+        </block>
+        <block wx:else>
+          <image src="../../img/none.png"></image>      
+        </block>
+      </button>
+      <input type="nickname" class="user-nickname" placeholder="请输入昵称" value="{{nickname}}" bindblur="onChangeNickName"/>
   </view>
 </view>
 <view class="navbox">
