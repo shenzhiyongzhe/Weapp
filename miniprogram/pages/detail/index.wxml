@@ -1,9 +1,9 @@
 <view class="container">
   <view class="title">{{detail.title}}</view>
   <view class="userBox">
-      <image src="{{detail.userinfo.avatar}}" class="userAvatar"></image>
+      <image src="{{detail.userInfo.avatar}}" class="userAvatar"></image>
       <view class="nickName-box">
-        <view class="nickname">{{detail.userinfo.nickname}}</view>
+        <view class="nickname">{{detail.userInfo.nickname}}</view>
         <view class="updateTime">3小时前发布</view>
       </view>  
       <view class="map-float">
@@ -29,13 +29,17 @@
     {{detail.description}}
     </view>
     <view class="imgbox">
-      <block wx:for="{{detail.fileList}}" wx:for-item="fileList" wx:key="index">
+      <block wx:for="{{detail.list}}" wx:for-item="fileList" wx:key="index">
         <image class="img" src="{{fileList}}" mode="aspectFill"/>
       </block>
     </view>
 </view>
 <!-- 广告 -->
 
-<view class="becareful">
-  .
+<view class="message-box">
+  <view class="leave-message">
+    <input type="text" placeholder="说出你想了解的"/>
+    <button catchtap="leaveMessage">留言</button>
+  </view>
+  <view class="message-list">hello world</view>
 </view>

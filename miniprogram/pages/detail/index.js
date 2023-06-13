@@ -10,7 +10,9 @@ Page({
     iconPath: '',
     marker: []
   },
-
+  leaveMessage(){
+    // wx.cloud.database().collection('list').where({_id: this.data.detail._id}).add()
+  },
   /**
    * 生命周期函数--监听页面加载
    */

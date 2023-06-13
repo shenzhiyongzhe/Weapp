@@ -1,25 +1,22 @@
 /* pages/detail/index.wxss */
-page{
-  background-color: #eeeeee;
-}
+
 .container{
   width: 100vw;
-  padding: 0 30rpx;
+  padding: 20rpx;
   background-color: white;
-  border-bottom-left-radius: 40rpx;
-  border-bottom-right-radius: 40rpx;
+  border-radius: 40rpx;
+  /* border-bottom-right-radius: 40rpx; */
 }
 .title{
   height: 60rpx;
   font-size: 30rpx;
   font-weight: bold;
   line-height: 44rpx;
+  /* margin-top: 20rpx; */
 }
 .userBox{
   display: flex;
   position: relative;
-  /* justify-content: center; */
-  width: 100vw;
   height: 100rpx;
   /* background-color: rgb(223, 187, 208); */
 }
@@ -55,7 +52,7 @@ page{
   transform: translate(0,90%);
   background-color: teal;
   border-radius: 250rpx;
-  box-shadow: 6rpx 6rpx 12rpx #c9c2c2;
+  box-shadow: 2rpx 4rpx 8rpx 8rpx #e4d7d7;
   overflow: scroll;
 }
 map{
@@ -79,14 +76,17 @@ map{
   color: #afafb0;
 }
 .info-item view:last-child{
-  font-size: 32rpx;
+  font-size: 28rpx;
   color: #1fab89;
 }
-.imgbox{
-  margin: 30rpx 0rpx 60rpx 0rpx;
+.info-content{
+  font-size: 30rpx;
 }
 .img{
   width: 150rpx; 
   height: 150rpx;
-  margin-right: 20rpx;
+  margin: 20rpx 20rpx 10rpx 0;
+}
+.message-box{
+  background-color: #1fab89;
 }
