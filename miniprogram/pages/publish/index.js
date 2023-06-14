@@ -105,7 +105,7 @@ Page({
     const {title, sex, description} = e.detail.value;
     const rent = Number(e.detail.value.rent)
     db.add({
-      data: {title, sex, description, rent, list, time, location, userInfo: {nickname, avatar}},
+      data: {title, sex, description, rent, list, time, location, userInfo: {nickname, avatar}, message: []},
       success: res => {
         wx.hideLoading();
         console.log("post success!", res)

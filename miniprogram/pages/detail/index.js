@@ -1,18 +1,28 @@
 // pages/detail/index.js
-// const content = '';
-Page({
+const db = wx.cloud.database();
 
+Page({
   /**
    * 页面的初始数据
    */
   data: {
     detail:'',
     iconPath: '',
-    marker: []
+    marker: [],
+    message: ''
   },
-  leaveMessage(){
-    // wx.cloud.database().collection('list').where({_id: this.data.detail._id}).add()
+  getInputValue(e){
+    this.data.detail.message.push(e.detail.value) 
   },
+  async leaveMessage(){
+    db.collection('list').where({_id: this.data.detail._id}).update({
+      data: {
+        message:this.data.detail.message
+      }
+    })
+    console.log(this.data.detail.message)
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -28,57 +38,26 @@ Page({
         latitude: detail.location.latitude,
         iconPath: '../../img/position.png'
       }]
-    })
-    console.log(options)
+    });
+      // const watch = 
+      db.collection('list').doc(this.data.detail._id).watch({
+      onChange: snapshot => {
+        this.setData({detail: snapshot.docs[0]})
+        console.log('snapshot', snapshot.docs[0].message)
+      },
+      onError: function(err) {
+        console.error('the watch closed because of error', err)
+      }
+    });
   },
 
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady() {
-    // console.log(content)
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow() {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面隐藏
-   */
-  onHide() {
-
-  },
 
   /**
    * 生命周期函数--监听页面卸载
    */
   onUnload() {
-
+    // this.watch.close()
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
 
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
 })

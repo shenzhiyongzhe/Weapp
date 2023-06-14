@@ -12,20 +12,16 @@
   font-size: 30rpx;
   font-weight: bold;
   line-height: 44rpx;
-  /* margin-top: 20rpx; */
 }
 .userBox{
   display: flex;
   position: relative;
   height: 100rpx;
-  /* background-color: rgb(223, 187, 208); */
 }
-
 .userAvatar{
   width: 100rpx;
   height: 100rpx;
   border-radius: 100rpx;
-  /* background-color: rgb(146, 138, 216); */
 }
 .nickName-box{
   display: flex;
@@ -87,6 +83,41 @@ map{
   height: 150rpx;
   margin: 20rpx 20rpx 10rpx 0;
 }
+.message-bar{
+  font-size: 26rpx;
+  padding: 20rpx;
+  background-color: rgba(201, 186, 219, 0.6);
+}
 .message-box{
-  background-color: #1fab89;
+  position: relative;
+  padding: 20rpx;
+  background-color: white;
+}
+.message-list{
+  /* min-height: 400rpx; */
+  box-sizing: border-box;
+  border-radius: 20rpx;
+}
+.leave-message{
+  width: 100vw;
+  height: 5;
+  position: absolute;
+  bottom: -50rpx;
+  left: 0;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  font-size: 26rpx;
+  background-color: white;
+}
+.leave-message input{
+  width: 80%;
+  border: 1rpx solid rgb(216, 218, 216);
+}
+.leave-message view{
+  width: 20%;
+  line-height: 50rpx;
+  text-align: center;
+  background-color: rgb(141, 199, 199);
+  /* height: 60rpx; */
 }
