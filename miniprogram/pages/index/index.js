@@ -6,16 +6,11 @@ Page({
   data: {
 
     clear_icon_show: false,
-    isPulldown: [false, false, false, false],
-    display: 'block',
-    region: '区域',
-    filterItem: [
-      [["区域"], ['南山区', '宝安区']], 
-      [["租金"], [500, 800, 1000, 1200, 1500]]
-    ],
-    randNum: Math.random(),
+    isActive: -1,
+    navList:["区域", '租金', '筛选', '排序'],
+    districtList: ['南山区', "宝安区"],
+    slider: 0,
     queryField: {},
-    refreshFlag: [false, false, false, false],
     userInfo: {},
     list: [],
     pageIndex: 0,
@@ -29,7 +24,6 @@ Page({
     selectedBox: {},
     sortList: ['默认排序', '时间最新', '价格最低'],
     sortFlag: ['default', 'sortByLatest', 'sortByCheapest'],
-    slider: 0,
     loadFlag: 'default'
   },
 
@@ -109,11 +103,15 @@ Page({
     else
       return console.log("inputSearch: no data")
   },
+  showPulldown(e){
+    this.setData({isActive: e.currentTarget.dataset.index})
+    console.log(e.currentTarget.dataset.index)
+  },
   //下拉菜单 区域的点击事件
   async districtClick(e){
     const index = e.target.dataset.index
     const item = this.data.filterItem[0][1][index]
-    this.setData({region: item, list: []});
+    this.setData({ list: []});
     this.data.queryField.keyword =  item;
     this.data.pageIndex = 0;
     const data = await this.queryData(this.data.queryField);
@@ -121,7 +119,7 @@ Page({
       this.setData({list: [ ...this.data.list, ...data]})
     else 
       return console.log('District: no data')
-    this.setData({isPulldown: false})
+    this.setData({isActive: -1})
   },
   // 租金区间筛选
   async rentConfirm(){
@@ -189,20 +187,7 @@ Page({
 
 
   // 动画
-  regionPulldown(){
-    this.setData({"isPulldown[0]": !this.data.isPulldown[0], display: 'block'});
-    // this.animate('.pulldown-container', [
-    //   { translateY: 0, height: 0 },
-    //   { translateY: 10, height: 15},
-    //   { translateY: 15,  height: 30},
-    // ], 400, function(){
-    //           this.clearAnimation('.pulldown-container', {opacity: false, translateY: false})
-    //         }.bind(this));    
-   
-  },
-  rentPulldown(){
-    this.setData({isPulldown: [false, true, false, false]})
-  },
+
   sliderEvent(e){
     this.data.slider = e.detail.value
   },

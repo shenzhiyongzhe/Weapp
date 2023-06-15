@@ -20,15 +20,15 @@ Page({
     const {pageIndex, pageSize, maxCount} = this.data;
     console.log(maxCount)
 
-    if(pageIndex * pageSize < maxCount)
+    // if(pageIndex * pageSize < maxCount)
       db.collection('list').limit(10).where({_openid: this.data.openid}).get().then(res => {
         this.setData({list: this.data.list.concat(res.data)})
     })
-    else 
-      wx.showToast({
-        title: '暂无数据',
-        icon: 'none'
-      });
+    // else 
+    //   wx.showToast({
+    //     title: '暂无数据',
+    //     icon: 'none'
+    //   });
   },
   /**
    * 生命周期函数--监听页面加载
