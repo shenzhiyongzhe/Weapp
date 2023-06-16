@@ -6,7 +6,9 @@ page{
 .header{
   position: fixed;
   font-size: 26rpx;
-  background-image: linear-gradient(to top, #83ccd2 0%, #97d9e1 100%);
+  /* background-image: linear-gradient(to top, #83ccd2 0%, #97d9e1 100%); */
+
+  background-image: linear-gradient(to top, #65d8e0 0%, #97d9e1 100%);
   box-shadow: 2rpx 4rpx 20rpx #0f9292;
   border-bottom-right-radius: 20rpx;
   border-bottom-left-radius: 20rpx;

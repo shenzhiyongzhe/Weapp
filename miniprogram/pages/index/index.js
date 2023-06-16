@@ -30,7 +30,7 @@ Page({
   tempBtn(){
   this.getList()
   },
-    // 获取房子的列表信息
+  // 获取房子的列表信息
   getList() {
     const { pageIndex, pageSize, list} = this.data;
     db.collection('list').limit(pageSize).skip(pageSize * pageIndex).get()
@@ -70,32 +70,33 @@ Page({
         this.data.isMax = true
     }) 
   },
-    //触底加载
-    async reachBottomLoad(){
-      const {isMax, queryField, loadFlag} = this.data;
-      console.log("isMax:", isMax)
-      if(isMax == false){
-        switch(loadFlag){
-          case 'default':
-            this.getList(); break;
-          case 'keyword':
-            this.queryData(queryField); break;
-          case 'sortByLatest':
-            this.sortBy("time", "desc"); break;
-          case 'sortByCheapest':
-            this.sortBy("rent", "asc"); break;
-          default : this.getList();
-        }
+  // 触底加载
+  async reachBottomLoad(){
+    const {isMax, queryField, loadFlag} = this.data;
+    console.log("isMax:", isMax, "loadFlag:", loadFlag)
+    if(isMax == false){
+      switch(loadFlag){
+        case 'default':
+          this.getList(); break;
+        case 'keyword':
+          this.queryData(queryField); break;
+        case 'sortByLatest':
+          this.queryData({order:{Field:"time", by:"desc"}}); break;
+        case 'sortByCheapest':
+          this.queryData({order:{Field:"rent", by:"asc"}}); break;
+        default : this.getList();
       }
-      else
-        return console.log('data is load out')
-    },
-  //搜索框搜索
+    }
+    else
+      return console.log('data is load out')
+  },
+  // 搜索框搜索
   async inputSearch(e){
     this.data.queryField.keyword = e.detail.value;
     this.data.pageIndex = 0;
     this.data.list = [];
     this.data.isMax = false;
+    this.data.loadFlag = 'keyword'
     const data = await this.queryData(this.data.queryField);
     if(data){
       this.setData({list: this.data.list.concat(data)})
@@ -103,14 +104,15 @@ Page({
     else
       return console.log("inputSearch: no data")
   },
+  // 下拉菜单点击事件
   showPulldown(e){
     this.setData({isActive: e.currentTarget.dataset.index})
   },
-  //下拉菜单 区域的点击事件
+  // 区域的点击事件
   async districtClick(e){
     const index = e.target.dataset.index
-  
-    // this.data.queryField.keyword =  item;
+    const district = this.data.districtList[index];
+    this.data.queryField.keyword =  district;
     this.data.pageIndex = 0;
     const data = await this.queryData(this.data.queryField);
     if(data) 
@@ -119,41 +121,22 @@ Page({
       return console.log('District: no data')
     this.setData({isActive: 0})
   },
+  // 租金，滑动条
+  sliderEvent(e){
+    this.data.slider = e.detail.value
+  },
   // 租金区间筛选
   async rentConfirm(){
     this.data.queryField.rent = this.data.slider;
     const data = await this.queryData(this.data.queryField)
-    // if(data) 
-    //   this.setData({list: [ ...this.data.list, ...data]})
-    // else 
-    //   return console.log('Rent: no data')
-    console.log("rent data:",data)
-    this.setData({isPulldown: [false, false, false, false]})
+    if(data) 
+      this.setData({list: [ ...this.data.list, ...data]})
+    else 
+      return console.log('Rent: no data')
+    // console.log("rent data:",data)
+    this.setData({isActive: -1})
   },
   //排序
-  sortBy(key, order="asc"){
-    const {pageIndex, pageSize, list} = this.data;
-    db.collection('list')
-      .orderBy(key, order)
-      .skip(pageIndex * pageSize)
-      .limit(pageSize)
-      .get()
-      .then(res => {
-        this.data.pageIndex++;
-        if(res.data.length == 0)
-          {
-            this.data.isMax = true;
-            return console.log("sort: no data")
-          }
-        else {
-          const postList = res.data.map(item => {
-            item.time = formatTime(item.time);
-            return item
-          })
-          this.setData({list: list.concat(postList)});
-        }
-      });
-  },
   sortEvent(e){
     const index = e.target.dataset.index;
     this.data.loadFlag = this.data.sortFlag[index];
@@ -161,8 +144,8 @@ Page({
     this.setData({pageIndex: 0, list: []});
     switch(index){
       case 0: this.getList(); break;
-      case 1: this.sortBy("time", "desc"); break;
-      case 2: this.sortBy("rent", "asc"); break;
+      case 1: this.queryData({order:{Field:"time", by:"desc"}}); break;
+      case 2: this.queryData({order:{Field:"rent", by:"asc"}}); break;
       default: console.log("maybe something wrong!")
     }
   },
@@ -183,30 +166,6 @@ Page({
     })
   },
 
-
-  // 动画
-  regionPulldown(){
-    this.setData({"isPulldown[0]": !this.data.isPulldown[0], display: 'block'});
-    // this.animate('.pulldown-container', [
-    //   { translateY: 0, height: 0 },
-    //   { translateY: 10, height: 15},
-    //   { translateY: 15,  height: 30},
-    // ], 400, function(){
-    //           this.clearAnimation('.pulldown-container', {opacity: false, translateY: false})
-    //         }.bind(this));    
-   
-  },
-  rentPulldown(){
-    this.setData({isPulldown: [false, true, false, false]})
-  },
-  sliderEvent(e){
-    this.data.slider = e.detail.value
-  },
-
-  selectPulldown(){
-
-    this.setData({isPulldown: [false, false, true, false]})
-  },
   sexSelect(e){
     this.data.selectedBox.sex = e.detail.value
   },
@@ -238,12 +197,10 @@ Page({
     // this.data.selectedBox.sex = 
     console.log(e)
   },
-  sortPulldown(){
-    this.setData({isPulldown: [false, false, false, true]})
-  },
+
 
   pulldownHidden(){
-    this.setData({isPulldown: [false, false, false, false]});
+    this.setData({isActive: -1});
   },
 
 
