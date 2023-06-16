@@ -1,197 +1,21 @@
 page{
+  width: 100vw;
   height: 100vh;
   position: relative;
 }
-
-.test-btn{
-  position: absolute;
-  width: 100rpx;
-  height: 100rxp;
-  bottom: 220rpx;
-  right: 100rpx;
-  box-shadow: 10rpx 10rpx 20rpx black;
-  font-size: 24rpx;
-}
-.active{
-  color: red;
-  transform: rotateX(-225deg);
-}
 .header{
   position: fixed;
+  font-size: 26rpx;
   background-image: linear-gradient(to top, #83ccd2 0%, #97d9e1 100%);
   box-shadow: 2rpx 4rpx 20rpx #0f9292;
   border-bottom-right-radius: 20rpx;
   border-bottom-left-radius: 20rpx;
-  margin-bottom: 20rpx;
   z-index: 99;
-}
-.region-container{
-  position: absolute;
-  width: 100vw;
-  height: 400rpx;
-  display: flex;
-  left: 0;
-  top: 60rpx;
-  border-radius: 20rpx;
-  background-color: #97d9e1;
-  z-index: 99;
-}
-.rent-container {
-  position: absolute;
-  width: 100vw;
-  height: 400rpx;
-  left: -25vw;
-  top: 60rpx;
-  border-radius: 20rpx;
-  background-color: #97d9e1;
-}
-.rent-box{
-  position: relative;
-  top: 20%;
-  /* background-color: chartreuse; */
-}
-.rent-container text{
-  display: block;
-  margin: 0 0 30rpx 30rpx;
-}
-.rent-container slider{
-  width: 92vw;
-}
-.confirm-btn{
-  /* position: absolute; */
-  width: 200rpx;
-  height: 70rpx;
-  line-height: 70rpx;
-  left: calc(50% - 100rpx);
-  background-color: #309eaa;
-  border-radius: 20rpx;
-}
-.radio-btn{
-  margin-top: 100rpx;
-}
-.select-btn{
-  margin-top: 30rpx;
-}
-.select-container {
-  position: absolute;
-  width: 100vw;
-  height: 430rpx;
-  left: -50vw;
-  top: 60rpx;
-  border-radius: 20rpx;
-  background-color: #97d9e1;
-}
-.radio-item{
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-
-}
-.radio-item radio-group{
-  display: flex;
-  justify-content: space-around;
-}
-.radio-item label{
-  position: relative;
-  padding: 10rpx 30rpx;
-  border-radius: 30rpx;
-  background-color: #EFF7F6;
-}
-.select-lable{
-  margin: 40rpx 0 20rpx 50rpx;
-}
-.select-radio .wx-radio-input{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: none;
-  opacity: 0;
-}
-.select-radio radio-group label:first-child{
-  margin-left: 5rpx;
-}
-.select-radio .wx-radio-input-checked::before{
-  width: 0;
-  height: 0;
-  display: none;
-}
-radio-group .limit-sex-active{
-  background-color: #2EC4B6;
-}
-checkbox-group .limit-sex-active{
-  background-color: #2EC4B6;
-}
-.radio-item checkbox-group{
-  display: flex;
-  justify-content: space-around;
-}
-.select-radio .wx-checkbox-input{
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  border: none;
-  opacity: 0;
-}
-.select-radio .wx-checkbox-input-checked::before{
-  width: 0;
-  height: 0;
-  display: none;
-}
-.sort-container{
-  position: absolute;
-  width: 100vw;
-  /* height: 250rpx; */
-  left: -75vw;
-  top: 60rpx;
-  display: flex;
-  flex-direction: column;
-  border-radius: 20rpx;
-  background-color: #97d9e1;
-}
-.sort-container view {
-  width: 90%;
-  height: 60rpx;
-  line-height: 50rpx;
-  font-size: 26rpx;
-  color: #036969;
-  margin: 20rpx auto 0 38rpx;
-  border-bottom: 1rpx solid rgb(74, 105, 109);
-}
-.sort-container view:last-child{
-  border: none;
-}
-.pulldown-hidden{
-  display: none;
-  /* visibility: hidden; */
-}
-.select-box{
-   width: 90vw;
-   margin: 0 auto;
-}
-.left-box, .right-box{
-  width: 50%;
-  height: 100%;
-  border-right: 1rpx solid #036969;
-}
-.left-item, .right-item{
-  width: 80%;
-  height: 60rpx;
-  line-height: 50rpx;
-  font-size: 26rpx;
-  color: #036969;
-  margin: 20rpx auto 0 38rpx;
-  border-bottom: 1rpx solid rgb(74, 105, 109);
 }
 .search-container {
   display: flex;
   align-items: center;
-  height: 110rpx;
-}
-.search-container view:first-child{
-  font-size: 26rpx;
-  width: 20%;
-  text-align: center;
+  justify-content: space-evenly;
 }
 .input-box{
   width: 75vw;
@@ -211,8 +35,7 @@ checkbox-group .limit-sex-active{
 .input-clear{
   flex: 1;
   text-align: center;
-  line-height: 50rpx;
-  color: #ccc;
+  color: rgb(81, 109, 116);
   transform: rotate(-135deg);
 }
 .filter-box{
@@ -224,13 +47,134 @@ checkbox-group .limit-sex-active{
   align-items: center;
 }
 .filter-item{
-  width: 25%;
+  flex: 1;
   display: flex;
-  position: relative;
-  color: #0d7377;
   justify-content: space-evenly;
-  border-right: 1rpx solid #ccc;
+  color: #0d7377;
+  border-right: 1rpx solid rgb(38, 180, 236);
 }
+.pulldown-container{
+  position: absolute;
+  width: 100vw;
+  top: 68rpx;
+  font-size: 26rpx;
+  padding: 10rpx 20rpx;
+  box-sizing: border-box;
+  color: #036969;
+  background-color: #97d9e1;
+  z-index: 99;
+}
+.region-container{
+  width: 100%;
+  display: flex;
+  border-radius: 20rpx;
+}
+.left-box{
+  flex: 1;
+  border-right: 1rpx solid #036969;
+}
+.right-box{
+  flex: 1;
+  padding-left: 20rpx;
+}
+.left-item, .right-item{
+  line-height: 50rpx;
+  border-bottom: 1rpx solid rgb(74, 105, 109);
+}
+.rent-container {
+  width: 100vw;
+  border-radius: 20rpx;
+  background-color: #97d9e1;
+}
+.rent-box{
+
+
+}
+.rent-container text{
+  display: block;
+  margin: 0 0 30rpx 30rpx;
+}
+.rent-container slider{
+  width: 92vw;
+}
+.confirm-btn{
+  /* position: absolute; */
+  width: 200rpx;
+  height: 70rpx;
+  line-height: 70rpx;
+  left: calc(50% - 100rpx);
+  background-color: #309eaa;
+  border-radius: 20rpx;
+}
+.select-container {
+  width: 100%;
+}
+.radio-item{
+  width: 90%;
+  margin: 0 auto;
+}
+.select-lable{
+  /* margin: 40rpx 0 20rpx 50rpx; */
+}
+
+
+.select-group{
+  display: flex;
+  justify-content: space-between;
+}
+.radio-item label{
+  position: relative;
+  padding: 6rpx 10rpx;
+  border-radius: 30rpx;
+  background-color: #EFF7F6;
+}
+
+.wx-radio-input, .wx-checkbox-input{
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  border: none;
+  opacity: 0;
+}
+
+.wx-radio-input-checked::before, .wx-checkbox-input-:checked{
+  width: 0;
+  height: 0;
+  display: none;
+}
+.radio-item .limit-sex-active{
+  background-color: #2EC4B6;
+}
+
+
+.select-btn{
+  margin-top: 40rpx;
+  margin-bottom: 20rpx;
+}
+.sort-container{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: 20rpx;
+}
+.sort-container view {
+  width: 90%;
+  line-height: 50rpx;
+  font-size: 26rpx;
+  border-bottom: 1rpx solid rgb(74, 105, 109);
+}
+.sort-container view:last-child{
+  border: none;
+}
+.pulldown-hidden{
+  display: none;
+  /* visibility: hidden; */
+}
+
+
 .pulldown-icon{
   font-size: 20rpx;
   transform: rotate(-45deg);
@@ -254,5 +198,25 @@ checkbox-group .limit-sex-active{
   position: static;
   width: 0;
 }
+.range-slider-block {
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  box-shadow: 0px 0px 5px #888;
+}
 
+/* .test-btn{
+  position: absolute;
+  width: 100rpx;
+  height: 100rxp;
+  bottom: 220rpx;
+  right: 100rpx;
+  box-shadow: 10rpx 10rpx 20rpx black;
+  font-size: 24rpx;
+}
 
+.active{
+  color: red;
+  transform: rotateX(-225deg);
+} */

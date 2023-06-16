@@ -4,32 +4,26 @@ const db = wx.cloud.database();
 const _ = db.command;
 Page({
   data: {
-
-    clear_icon_show: false,
-    isPulldown: [false, false, false, false],
-    display: 'block',
-    region: '区域',
-    filterItem: [
-      [["区域"], ['南山区', '宝安区']], 
-      [["租金"], [500, 800, 1000, 1200, 1500]]
-    ],
-    randNum: Math.random(),
-    queryField: {},
-    refreshFlag: [false, false, false, false],
-    userInfo: {},
     list: [],
     pageIndex: 0,
     pageSize: 5,
     isMax: false,
-    isRefresh: true,
-    scrollTop: 0,
+    isActive: -1,
+    navList: ['区域', '租金', '筛选', '排序'],
+    districtList: ['南山区', '宝安区'],
+    slider: 0,
     limitSex: [true, false, false, false],
     limitSexList: ['默认', '限男生', '限女生', '不限男女'],
     checkboxList: [[true, '默认'], [false, '可短租'], [false, '近地铁'], [false, '有阳台']],
     selectedBox: {},
     sortList: ['默认排序', '时间最新', '价格最低'],
     sortFlag: ['default', 'sortByLatest', 'sortByCheapest'],
-    slider: 0,
+    clear_icon_show: false,
+    queryField: {},
+    refreshFlag: [false, false, false, false],
+    userInfo: {},
+    isRefresh: true,
+    scrollTop: 0,
     loadFlag: 'default'
   },
 
@@ -109,19 +103,21 @@ Page({
     else
       return console.log("inputSearch: no data")
   },
+  showPulldown(e){
+    this.setData({isActive: e.currentTarget.dataset.index})
+  },
   //下拉菜单 区域的点击事件
   async districtClick(e){
     const index = e.target.dataset.index
-    const item = this.data.filterItem[0][1][index]
-    this.setData({region: item, list: []});
-    this.data.queryField.keyword =  item;
+  
+    // this.data.queryField.keyword =  item;
     this.data.pageIndex = 0;
     const data = await this.queryData(this.data.queryField);
     if(data) 
       this.setData({list: [ ...this.data.list, ...data]})
     else 
       return console.log('District: no data')
-    this.setData({isPulldown: false})
+    this.setData({isActive: 0})
   },
   // 租金区间筛选
   async rentConfirm(){

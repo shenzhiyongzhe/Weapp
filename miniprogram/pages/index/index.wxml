@@ -8,44 +8,45 @@
     </view>
   </view>
   <view class="filter-box">
-    <view class="filter-item" catchtap="regionPulldown">
-      <view>{{region}}</view>
+    <view class="filter-item" wx:for="{{navList}}" wx:key="index" catchtap="showPulldown" data-index="{{index}}">
+      <view>{{item}}</view>
       <view class="pulldown-icon">∟</view>
-      <view class="{{isPulldown[0] ? '.region-container' : '.pulldown-hidden'}}">
-        <view class="left-box">
-          <view class="left-item">{{filterItem[0][0]}}</view>
-        </view>
-        <view class="right-box">
-          <view class="right-item" bindtap="districtClick" data-index="{{index}}" wx:for="{{filterItem[0][1]}}" wx:key="index">{{item}}</view>
-        </view>
-      </view>
     </view>
-    <view class="filter-item" catchtap="rentPulldown">
-      <view>租金</view>
-      <view class="pulldown-icon">∟</view>
-      <view class="{{isPulldown[1] ? '.rent-container' : '.pulldown-hidden'}}">
-        <view class="rent-box">
-          <text class="section__title">租金：</text>
-          <slider bindchange="sliderEvent" min="200" max="1500" backgroundColor="#3f989d" show-value></slider>  
-          <button class="confirm-btn radio-btn" catchtap="rentConfirm">确定</button>
+    <view class="pulldown-container">
+      <block wx:if="{{isActive === 0}}">
+        <view class='region-container'>
+          <view class="left-box">
+            <view class="left-item">区域</view>
+          </view>
+          <view class="right-box">
+            <view class="right-item" bindtap="districtClick" data-index="{{index}}" wx:for="{{districtList}}" wx:for-item="district" wx:key="index">{{district}}</view>
+          </view>
         </view>
-      </view>
-    </view>
-    <view class="filter-item" catchtap="selectPulldown">
-      <view>筛选</view>
-      <view class="pulldown-icon">∟</view>
-      <view class="{{isPulldown[2] ? '.select-container' : '.pulldown-hidden'}}">
-        <view class="select-box">
-          <form class="select-radio" bindsubmit="selectSubmit">
+      </block>
+      <block wx:elif="{{isActive === 1}}">
+        <view class=".rent-container">
+          <view class="rent-box">
+            <text class="section__title">租金：</text>
+            <Slider width='400' height='80' block-size='50' min='99' max='999' values='{{rangeValues}}' bind:rangechange='onRangeChange'>
+              <view slot='minBlock' class='range-slider-block'></view>
+              <view slot='maxBlock' class='range-slider-block'></view>
+            </Slider>
+            <button class="confirm-btn radio-btn" catchtap="rentConfirm">确定</button>
+          </view>
+        </view>
+      </block>
+      <block wx:elif="{{isActive === 2}}">
+        <view class="select-container">
+          <form bindsubmit="selectSubmit">
             <view class="radio-item">
               <view class="select-lable">性别：</view>          
-              <radio-group bindchange="sexSelect">
+              <radio-group class="select-group" bindchange="sexSelect">
                 <label wx:for="{{limitSexList}}" wx:key="index" for="{{index}}" class="{{limitSex[index] ? '.limit-sex-active' : ''}}" catchtap="radioClick" data-index="{{index}}"><radio value="{{item}}" name="sex"/>{{item}}</label>
               </radio-group>
             </view>
             <view class="radio-item">
               <view class="select-lable">类型：</view>
-              <checkbox-group bindchange="checkboxSelected">
+              <checkbox-group class="select-group" bindchange="checkboxSelected">
                 <label catchtap="checkboxClick" data-index="{{index}}" wx:for="{{checkboxList}}" wx:key="index" class="{{item[0] ? '.limit-sex-active' : ''}}">
                     <checkbox value="{{item[1]}}" checked="{{item[0]}}" name="{{item[1]}}"/>{{item[1]}}
                 </label>            
@@ -53,15 +54,13 @@
             </view>
             <button class="confirm-btn select-btn"  form-type="submit">确定</button>
           </form>
+      </view>
+      </block>
+      <block wx:elif="{{isActive === 3}}">
+        <view class="sort-container">
+          <view wx:for="{{sortList}}" wx:key="index" catchtap="sortEvent" data-index="{{index}}">{{item}}</view>
         </view>
-      </view>
-    </view>
-    <view class="filter-item" catchtap="sortPulldown">
-      <view>排序</view>
-      <view class="pulldown-icon">∟</view>
-      <view class="{{isPulldown[3] ? '.sort-container' : '.pulldown-hidden'}}">
-        <view wx:for="{{sortList}}" wx:key="index" catchtap="sortEvent" data-index="{{index}}">{{item}}</view>
-      </view>
+      </block>
     </view>
   </view>
 
@@ -69,7 +68,7 @@
 
 
 <!-- 辅助元素，用于点击取消下拉菜单的显示 -->
-<view class="{{isPulldown[0] || isPulldown[1] || isPulldown[2] || isPulldown[3] ? '.mask': '.mask-hidden'}}" catchtap="pulldownHidden"></view>
+<view class="{{isActive >= 0 ? '.mask': '.mask-hidden'}}" catchtap="pulldownHidden"></view>
 <scroll-view
   class="list-view"
   scroll-y="{{true}}"
@@ -82,7 +81,7 @@
   <InfoCard list="{{list}}"/>
 </scroll-view>
 
-<button catchtap="tempBtn" class="test-btn">回到顶部</button>
+<!-- <button catchtap="tempBtn" class="test-btn">回到顶部</button> -->
 
 <!-- <view catchtap="getValue" style="background-color: aqua; z-index: 10;">hello</view> -->
 
