@@ -1,0 +1,12 @@
+<view class="radio-box">
+  <view class="lable">{{lable}}</view>
+  <view class="group">
+    <view class="{{isActive == index ? 'item active' : 'item'}}"
+      wx:for="{{radioList}}" wx:key="index" 
+      catchtap="onChange" 
+      data-index="{{index}}" data-item="{{item}}"
+    >
+      {{item}}
+    </view>
+  </view>
+</view>

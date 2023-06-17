@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "InfoCard": "../../components/infocard/infocard"
+    "Card": "../../components/card/card",
+    "MyRadio": "../../components/radio/radio"
   }
 }

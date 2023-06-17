@@ -1,3 +1,3 @@
 <view>
-  <InfoCard list="{{list}}"/>
+  <Card list="{{list}}"/>
 </view>

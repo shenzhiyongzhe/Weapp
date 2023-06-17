@@ -4,7 +4,7 @@
       <image src="{{detail.userInfo.avatar}}" class="userAvatar"></image>
       <view class="nickName-box">
         <view class="nickname">{{detail.userInfo.nickname}}</view>
-        <view class="updateTime">3小时前发布</view>
+        <view class="updateTime">{{detail.time}}</view>
       </view>  
       <view class="map-float">
         <map scale="12" latitude="{{detail.location.latitude}}" longitude="{{detail.location.longitude}}" markers="{{marker}}"></map> 

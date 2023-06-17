@@ -14,6 +14,9 @@ Page({
     if(avatar && nickname)
       this.setData({avatar: wx.getStorageSync('avatar'), nickname: wx.getStorageSync('nickname')})
   },
+  test(e){
+    console.log("hello", e.detail)
+  },
   navToPublish(){
     const {avatar, nickname} = this.data;
     if(avatar && nickname)
@@ -107,9 +110,5 @@ Page({
         })
       })
     },
-
- async test(){
-   console.log(wx.getStorageSync('avatar'))
-  },
 
 })

@@ -3,7 +3,7 @@
     src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.ttf');
   }
 page {
-  background-image: linear-gradient(to top, #d9afd9 0%, #97d9e1 100%);
+  background-image: linear-gradient(to left, #dff4f3 0%, #fef0ff 100%);
   font-family: sans-serif;
   
 }

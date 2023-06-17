@@ -28,7 +28,7 @@
   "window": {
     "backgroundColor": "#a1c4fd",
     "backgroundTextStyle": "light",
-    "navigationBarBackgroundColor": "#98d8e1",
+    "navigationBarBackgroundColor": "#eeeeee",
     "navigationBarTitleText": "南租",
     "navigationBarTextStyle": "black"
   },
