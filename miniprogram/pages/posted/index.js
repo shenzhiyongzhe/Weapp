@@ -18,7 +18,7 @@ Page({
   },
   getPosted(){
     const {pageIndex, pageSize, maxCount} = this.data;
-    console.log(maxCount)
+    console.log(maxCount, this.data.openid)
 
     // if(pageIndex * pageSize < maxCount)
       db.collection('list').limit(10).where({_openid: this.data.openid}).get().then(res => {

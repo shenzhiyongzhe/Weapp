@@ -1,4 +1,3 @@
-// index.js
 import formatTime from '../../utils/formatTime.js'
 const db = wx.cloud.database();
 const _ = db.command;
@@ -21,23 +20,16 @@ Page({
   },
 
   test(){
-    const keyword = '地铁站'
-    const district = '宝安' 
-    const rent = 400
-    const select = {sex: ['女生', '男生', '']} 
-    const order = {field: '_id', by: 'asc'}
+  this.getList()
 
 
   },
   // 获取房子的列表信息
   async getList() {
-    const { pageIndex, pageSize, list, isMax} = this.data;
-    if(isMax == false){
       const data = await this.queryData(this.data.queryPara);
-      this.setData({list: this.data.list.concat(data)})
-    }
-    else
-      return  console.log("getList no more data")
+      if(data !== null)
+        this.setData({list: this.data.list.concat(data)})
+      console.log("getList data:", data)
   },
   // 查询信息
   queryData({keyword, district, rent, select, order}){
@@ -48,7 +40,7 @@ Page({
         _.or([
           {'location.address': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
           {'location.name': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
-          {title: db.RegExp({regexp: '.*' + keyword})},
+          {title: db.RegExp({regexp: '.*' + keyword, option: 'i'})},
           {description: db.RegExp({regexp: '.*' + keyword})},
         ]),
         {'location.address': db.RegExp({regexp: '.*' + district})},
@@ -56,7 +48,9 @@ Page({
         {sex: _.in(select.sex)},
       ]))
       .orderBy(order.field, order.by)
-      .skip(pageSize * pageIndex).get().then(res => {
+      .skip(pageSize * pageIndex)
+      .get()
+      .then(res => {
         this.data.pageIndex++;
         if(res.data.length > 0){
           const postList = res.data.map(item => {
@@ -64,39 +58,38 @@ Page({
             return item
           })
           resolve(postList)
-          console.log('return data', res.data)
         }
         else{
           this.data.isMax = true;
           resolve(null)
         }
+        console.log('return data', res.data, this.data.queryPara)
       }) 
     })
   },
   // 触底加载
   async reachBottomLoad(){
-    const {isMax, queryField, loadFlag} = this.data;
-    console.log("isMax:", isMax, "loadFlag:", loadFlag)
-    if(isMax == false){
-      this.getList()
-      
+    console.log("isMax:", this.data.isMax)
+    if(this.data.isMax == false){
+      this.getList()   
     }
     else
-      return console.log('data is load out')
+      return wx.showToast({
+        title: '没有数据了',
+        icon: 'none'
+      })
   },
   // 搜索框搜索
   async inputSearch(e){
     this.data.pageIndex = 0;
     this.data.list = [];
     this.data.isMax = false;
-    this.data.loadFlag = 'keyword';
     this.data.queryPara.keyword = e.detail;
     const data = await this.queryData(this.data.queryPara);
     if(data == null)
       this.setData({isEmpty: true})
     else
       this.setData({list: data, isEmpty: false})
-    console.log("data", data == null)
   },
   // 下拉菜单点击事件
   showPulldown(e){
@@ -138,7 +131,11 @@ Page({
     this.data.list = [];
     this.data.pageIndex = 0;
     switch(index){
-      case 0: this.getList(); break;
+      case 0: 
+        this.data.queryPara.order = {field: '_id', by: 'asc'};
+        const data_default = await this.queryData(this.data.queryPara); 
+        this.setData({list: data_default})
+        break;
       case 1: 
         this.data.queryPara.order = {field:"time", by:"desc"}; 
         const data_time = await this.queryData(this.data.queryPara);

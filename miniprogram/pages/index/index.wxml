@@ -33,8 +33,8 @@
       <block wx:elif="{{isActive === 2}}">
         <view class="select-container">
           <MyRadio type="radio" lable="限制" list="{{['默认', '男生', '女生', '不限男女']}}" bind:onChange="test"/>
-          <MyRadio type="checkbox" lable="限制" list="{{['可短租', '近地铁', '有阳台',  '带独卫']}}" bind:onChange="test"/>
-          <button class="confirm-btn select-btn"  form-type="submit">确定</button>  
+          <MyRadio type="radio" lable="标签" list="{{['可短租', '近地铁', '有阳台',  '带独卫']}}" bind:onChange="test"/>
+          <button class="confirm-btn select-btn" >确定</button>  
       </view>
       </block>
       <block wx:elif="{{isActive === 3}}">

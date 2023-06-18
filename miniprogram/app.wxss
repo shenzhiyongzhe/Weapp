@@ -1,10 +1,9 @@
-  @font-face {
-    font-family: 'font-awesome';
-    src: url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/webfonts/fa-brands-400.ttf');
-  }
+
 page {
   background-image: linear-gradient(to left, #dff4f3 0%, #fef0ff 100%);
-  font-family: sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Helvetica Neue', Helvetica,
+  Segoe UI, Arial, Roboto, 'PingFang SC', 'miui', 'Hiragino Sans GB', 'Microsoft Yahei',
+  sans-serif;
   
 }
 button {

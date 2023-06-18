@@ -1,45 +1,25 @@
 <form catchsubmit="formSubmit">
-  <view class="form-input">
-    <view class="lable">标题</view>
-    <input class="input" type="text" name="title" placeholder="简单概况房子信息"/>
-    <view class="input-clear-icon">+</view>
-  </view>
-  <view class="form-input">
-    <view class="lable">预算</view>
-    <input class="input" type="number" name="rent" placeholder="房子的租金"/>
-    <view class="input-clear-icon">+</view>
-  </view>
+<van-cell-group>
+  <van-field name="title" value="{{title}}" required clearable label="标题" placeholder="简单概括房子信息" />
+  <van-field name="rent" value="{{rent}}" type="number" label="租金" placeholder="房子每月租金" required />
   <picker bindchange="chooseSex" value="{{index}}" range="{{sexList}}">   
-    <view class="form-input">
-      <view class="lable">限制</view>
-      <input class="input" type="text" name="sex" value="{{sex}}" disabled placeholder="性别限制"/>
-      <view class="input-forward-icon">∟</view>
-    </view>
+   <van-field name="sex" value="{{sex}}" type="text" label="限制" placeholder="性别限制" is-link />
   </picker>
-  <view class="form-input" bindtap="chooseLocation">
-    <view class="lable">位置</view>
-    <input class="input" type="text" value="{{location.name}}" disabled placeholder="位置"/>
-    <view class="input-forward-icon">∟</view>
-  </view>
+  <label bindtap="chooseLocation">
+    <van-field name="location" value="{{location.name}}" type="text" label="位置" placeholder="位置" required is-link />
+  </label>
   <navigator url="/pages/description/index?description={{description}}" hover-class="navigator-hover">
-    <view class="form-input">
-      <view class="lable">描述</view>
-      <input class="input" type="text" name="description" value="{{description}}" disabled placeholder="详细描述"/>
-      <view class="input-forward-icon">∟</view>
-    </view>
+    <van-field type="text" label="详情" name="description" value="{{description}}" placeholder="详细描述" is-link/>
   </navigator>
-
   <view class="photo-box">
-  <van-uploader file-list="{{ tempUrl }}" bind:after-read="afterRead" />
-
-      <!-- <image wx:for="{{tempUrl}}" wx:key="index" class="img-nail" src="{{item}}" mode="aspectFit"/>
-      <button class="btn" bindtap="chooseImg" wx:if="{{maxUpload}}"><image class="img-icon" src="../../img/photo.png" mode="aspectFit"/></button> -->
-
+    <van-uploader file-list="{{ tempUrl }}" catch:delete="deletImg" max-count="4" multiple deletable="{{ true }}"
+     upload-text="点击上传" bind:after-read="afterRead"  />
   </view>
-  <button type="primary" form-type="submit">提交</button>
+</van-cell-group>
+  <button class="btn" type="primary" form-type="submit">提交</button>
 </form>
 <!-- 测试 -->
-<button bindtap="uploadFile">测试</button>
+<button bindtap="test">测试</button>
 
 
 
