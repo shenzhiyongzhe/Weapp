@@ -28,9 +28,12 @@
       <view class="input-forward-icon">∟</view>
     </view>
   </navigator>
+
   <view class="photo-box">
-      <image wx:for="{{tempUrl}}" wx:key="index" class="img-nail" src="{{item}}" mode="aspectFit"/>
-      <button class="btn" bindtap="chooseImg" wx:if="{{maxUpload}}"><image class="img-icon" src="../../img/photo.png" mode="aspectFit"/></button>
+  <van-uploader file-list="{{ tempUrl }}" bind:after-read="afterRead" />
+
+      <!-- <image wx:for="{{tempUrl}}" wx:key="index" class="img-nail" src="{{item}}" mode="aspectFit"/>
+      <button class="btn" bindtap="chooseImg" wx:if="{{maxUpload}}"><image class="img-icon" src="../../img/photo.png" mode="aspectFit"/></button> -->
 
   </view>
   <button type="primary" form-type="submit">提交</button>

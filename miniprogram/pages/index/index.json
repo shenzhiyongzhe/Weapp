@@ -1,6 +1,9 @@
 {
   "usingComponents": {
     "Card": "../../components/card/card",
-    "MyRadio": "../../components/radio/radio"
+    "MyRadio": "../../components/radio/radio",
+    "Slider": "../../components/slider/slider",
+    "van-search": "@vant/weapp/search/index",
+    "van-empty": "@vant/weapp/empty/index"
   }
 }

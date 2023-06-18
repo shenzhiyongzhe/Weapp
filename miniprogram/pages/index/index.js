@@ -7,102 +7,96 @@ Page({
     list: [],
     pageIndex: 0,
     pageSize: 5,
-    isMax: false,
     isActive: -1,
+    isMax: false,
     navList: ['区域', '租金', '筛选', '排序'],
-    districtList: ['南山区', '宝安区'],
-    slider: 0,
-    limitSex: [true, false, false, false],
-    limitSexList: ['默认', '限男生', '限女生', '不限男女'],
-    checkboxList: [[true, '默认'], [false, '可短租'], [false, '近地铁'], [false, '有阳台']],
-    selectedBox: {},
+    districtList: ['南山区', '宝安区', '罗湖区', '龙华区'],
+    slider: 100,
     sortList: ['默认排序', '时间最新', '价格最低'],
-    sortFlag: ['default', 'sortByLatest', 'sortByCheapest'],
-    clear_icon_show: false,
-    queryField: {},
-    refreshFlag: [false, false, false, false],
+    queryPara: {keyword: '', district: '', rent: 2000, select:{sex: ['', '不限', '男生', '女生']}, order: {field: '_id', by: 'asc'}},
     userInfo: {},
     isRefresh: true,
     scrollTop: 0,
-    loadFlag: 'default'
+    isEmpty: false,
   },
 
-  test(e){
-    console.log(e.detail)
+  test(){
+    const keyword = '地铁站'
+    const district = '宝安' 
+    const rent = 400
+    const select = {sex: ['女生', '男生', '']} 
+    const order = {field: '_id', by: 'asc'}
+
+
   },
   // 获取房子的列表信息
-  getList() {
-    const { pageIndex, pageSize, list} = this.data;
-    db.collection('list').limit(pageSize).skip(pageSize * pageIndex).get()
-    .then(res => {
-      this.data.pageIndex++;
-      if(res.data.length === 0)
-        this.data.isMax = true
-      else {
-        const postList = res.data.map(item => {
-          item.time = formatTime(item.time);
-          return item
-        });        
-        this.setData({list: list.concat(postList)})    
-      }
-    })
+  async getList() {
+    const { pageIndex, pageSize, list, isMax} = this.data;
+    if(isMax == false){
+      const data = await this.queryData(this.data.queryPara);
+      this.setData({list: this.data.list.concat(data)})
+    }
+    else
+      return  console.log("getList no more data")
   },
   // 查询信息
-  queryData({keyword='', sex='', rent=1500, order={Field: '_id', by: 'asc'}}){
-    const {pageIndex, pageSize, list} = this.data;
-    db.collection('list').limit(pageSize).where(_.or([
-      {'location.address': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
-      {title: db.RegExp({regexp: '.*' + keyword})},
-      {description: db.RegExp({regexp: '.*' + keyword})},
-    ]), _.and([{rent: _.lt(rent)}, {sex: sex}]))
-    .orderBy(order.Field, order.by)
-    .skip(pageSize * pageIndex).get().then(res => {
-      this.data.pageIndex++;
-      if(res.data.length > 0){
-        const postList = res.data.map(item => {
-          item.time = formatTime(item.time);
-          return item
-        })
-        this.setData({list: list.concat(postList)})
-        console.log('return data', res.data)
-      }
-      else
-        this.data.isMax = true
-    }) 
+  queryData({keyword, district, rent, select, order}){
+    const {pageIndex, pageSize} = this.data;
+    return new Promise( resolve => {
+      db.collection('list').limit(pageSize).where(
+      _.and([
+        _.or([
+          {'location.address': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
+          {'location.name': db.RegExp({regexp: '.*' + keyword, option: 'i'})},
+          {title: db.RegExp({regexp: '.*' + keyword})},
+          {description: db.RegExp({regexp: '.*' + keyword})},
+        ]),
+        {'location.address': db.RegExp({regexp: '.*' + district})},
+        {rent: _.lt(rent)},
+        {sex: _.in(select.sex)},
+      ]))
+      .orderBy(order.field, order.by)
+      .skip(pageSize * pageIndex).get().then(res => {
+        this.data.pageIndex++;
+        if(res.data.length > 0){
+          const postList = res.data.map(item => {
+            item.time = formatTime(item.time);
+            return item
+          })
+          resolve(postList)
+          console.log('return data', res.data)
+        }
+        else{
+          this.data.isMax = true;
+          resolve(null)
+        }
+      }) 
+    })
   },
   // 触底加载
   async reachBottomLoad(){
     const {isMax, queryField, loadFlag} = this.data;
     console.log("isMax:", isMax, "loadFlag:", loadFlag)
     if(isMax == false){
-      switch(loadFlag){
-        case 'default':
-          this.getList(); break;
-        case 'keyword':
-          this.queryData(queryField); break;
-        case 'sortByLatest':
-          this.queryData({order:{Field:"time", by:"desc"}}); break;
-        case 'sortByCheapest':
-          this.queryData({order:{Field:"rent", by:"asc"}}); break;
-        default : this.getList();
-      }
+      this.getList()
+      
     }
     else
       return console.log('data is load out')
   },
   // 搜索框搜索
   async inputSearch(e){
-    this.data.queryField.keyword = e.detail.value;
     this.data.pageIndex = 0;
     this.data.list = [];
     this.data.isMax = false;
-    this.data.loadFlag = 'keyword'
-    const data = await this.queryData(this.data.queryField);
-    if(data){
-      this.setData({list: this.data.list.concat(data)})
-    }
+    this.data.loadFlag = 'keyword';
+    this.data.queryPara.keyword = e.detail;
+    const data = await this.queryData(this.data.queryPara);
+    if(data == null)
+      this.setData({isEmpty: true})
     else
-      return console.log("inputSearch: no data")
+      this.setData({list: data, isEmpty: false})
+    console.log("data", data == null)
   },
   // 下拉菜单点击事件
   showPulldown(e){
@@ -112,42 +106,52 @@ Page({
   async districtClick(e){
     const index = e.target.dataset.index
     const district = this.data.districtList[index];
-    this.data.queryField.keyword =  district;
+    this.data.queryPara.district =  district;
     this.data.pageIndex = 0;
-    const data = await this.queryData(this.data.queryField);
-    if(data) 
-      this.setData({list: [ ...this.data.list, ...data]})
+    const data = await this.queryData(this.data.queryPara);
+    if(data != null) 
+      this.setData({list: data, isEmpty: false})
     else 
-      return console.log('District: no data')
-    this.setData({isActive: 0})
+      this.setData({isEmpty: true})
+    this.setData({isActive: -1})
   },
   // 租金，滑动条
   sliderEvent(e){
-    this.data.slider = e.detail.value
+    this.setData({slider: e.detail.value})
   },
   // 租金区间筛选
   async rentConfirm(){
-    this.data.queryField.rent = this.data.slider;
-    const data = await this.queryData(this.data.queryField)
-    if(data) 
-      this.setData({list: [ ...this.data.list, ...data]})
+    this.data.queryPara.rent = this.data.slider;
+    const data = await this.queryData(this.data.queryPara);
+    if(data != null) 
+      this.setData({list: data, isEmpty: false})
     else 
-      return console.log('Rent: no data')
-    // console.log("rent data:",data)
-    this.setData({isActive: -1})
+      this.setData({isEmpty: true})
+    // console.log("rent data:",this.data.slider,this.data.queryPara)
+    this.setData({isActive: -1});
   },
   //排序
-  sortEvent(e){
+  async sortEvent(e){
     const index = e.target.dataset.index;
     this.data.loadFlag = this.data.sortFlag[index];
     this.data.isMax = false;
-    this.setData({pageIndex: 0, list: []});
+    this.data.list = [];
+    this.data.pageIndex = 0;
     switch(index){
       case 0: this.getList(); break;
-      case 1: this.queryData({order:{Field:"time", by:"desc"}}); break;
-      case 2: this.queryData({order:{Field:"rent", by:"asc"}}); break;
+      case 1: 
+        this.data.queryPara.order = {field:"time", by:"desc"}; 
+        const data_time = await this.queryData(this.data.queryPara);
+        this.setData({list: data_time})
+        break;
+      case 2: 
+        this.data.queryPara.order = {field:"rent", by:"asc"}; 
+        const data_rent = await this.queryData(this.data.queryPara); 
+        this.setData({list: data_rent})
+        break;
       default: console.log("maybe something wrong!")
     }
+    this.setData({isActive: -1})
   },
 
   //下拉刷新
