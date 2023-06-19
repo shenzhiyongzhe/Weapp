@@ -12,15 +12,15 @@ Page({
     districtList: ['南山区', '宝安区', '罗湖区', '龙华区'],
     slider: 100,
     sortList: ['默认排序', '时间最新', '价格最低'],
-    queryPara: {keyword: '', district: '', rent: 2000, select:{sex: ['', '不限', '男生', '女生']}, order: {field: '_id', by: 'asc'}},
+    queryPara: {keyword: '', district: '', rent: 2000, select:{sex: ["", "不限", "男生", "女生"]}, order: {field: '_id', by: 'asc'}},
     userInfo: {},
     isRefresh: true,
     scrollTop: 0,
     isEmpty: false,
   },
 
-  test(){
-  this.getList()
+  test(e){
+  console.log(e)
 
 
   },
@@ -44,15 +44,15 @@ Page({
           {description: db.RegExp({regexp: '.*' + keyword})},
         ]),
         {'location.address': db.RegExp({regexp: '.*' + district})},
-        {rent: _.lt(rent)},
+        {rent: _.lte(rent)},
         {sex: _.in(select.sex)},
       ]))
       .orderBy(order.field, order.by)
       .skip(pageSize * pageIndex)
       .get()
       .then(res => {
-        this.data.pageIndex++;
         if(res.data.length > 0){
+          this.data.pageIndex++;
           const postList = res.data.map(item => {
             item.time = formatTime(item.time);
             return item
@@ -117,11 +117,28 @@ Page({
     this.data.queryPara.rent = this.data.slider;
     const data = await this.queryData(this.data.queryPara);
     if(data != null) 
-      this.setData({list: data, isEmpty: false})
-    else 
+      this.setData({list: data})
+    this.setData({isActive: -1, isEmpty: false});
+  },
+   // 单选框的点击事件
+   sexSelect(e){
+     if(e.detail[1] == "默认")
+       this.data.queryPara.select.sex = ["", "不限", "男生", "女生"]
+    this.data.queryPara.select.sex = [e.detail[1]]
+  },
+  // 多选框的点击事件
+  checkboxSelected(e){
+    this.data.selectedBox.rentType = e.detail.value
+  },
+  // 确定按钮的点击事件
+  async checkboxConfirm(){
+    console.log("this.data.queryPara", this.data.queryPara);
+    const data = await this.queryData(this.data.queryPara);
+    if(data == null)
       this.setData({isEmpty: true})
-    // console.log("rent data:",this.data.slider,this.data.queryPara)
-    this.setData({isActive: -1});
+    else
+      this.setData({list: data, isEmpty: false})
+    this.setData({isActive: -1})
   },
   //排序
   async sortEvent(e){
@@ -148,7 +165,7 @@ Page({
         break;
       default: console.log("maybe something wrong!")
     }
-    this.setData({isActive: -1})
+    this.setData({isActive: -1, isEmpty: false})
   },
 
   //下拉刷新
@@ -167,37 +184,6 @@ Page({
     })
   },
 
-  sexSelect(e){
-    this.data.selectedBox.sex = e.detail.value
-  },
-  radioClick(e){
-    const index = e.currentTarget.dataset.index;
-    const list = this.data.limitSex.map( (item, i) => {
-      if(i == index)
-        return true
-      else return false
-    })
-    this.setData({limitSex: list});
-  },
-  checkboxClick(e){
-    const index = e.currentTarget.dataset.index;
-    const list = this.data.checkboxList.map( (item, i) => {
-      if(i == index){
-        item[0] = !item[0];
-        return item
-      }
-      else return item
-    })
-    this.setData({checkboxList: list})
-    // console.log( e.currentTarget.dataset.index, list)
-  },
-  checkboxSelected(e){
-    this.data.selectedBox.rentType = e.detail.value
-  },
-  selectSubmit(e){
-    // this.data.selectedBox.sex = 
-    console.log(e)
-  },
 
 
   pulldownHidden(){
