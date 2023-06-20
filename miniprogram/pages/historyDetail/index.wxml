@@ -1,0 +1,48 @@
+<view class="container">
+  <view class="title">{{item.title}}</view>
+  <view class="userBox">
+      <image src="{{item.userInfo.avatar}}" class="userAvatar"></image>
+      <view class="nickName-box">
+        <view class="nickname">{{item.userInfo.nickname}}</view>
+        <view class="updateTime">{{item.time}}</view>
+      </view>  
+      <view class="map-float">
+        <map scale="12" latitude="{{item.location.latitude}}" longitude="{{item.location.longitude}}" markers="{{marker}}"></map> 
+      </view>
+   
+  </view>
+  <view class="info-box">
+    <view class="info-item">
+      <view>租金</view>
+      <view>{{item.rent}} 元/月</view>
+    </view>
+    <view class="info-item">
+      <view>性别限制</view>
+      <view>{{item.sex}}</view>
+    </view>
+    <view class="info-item">
+      <view>位置（点击可查看地图）</view>
+      <view>{{item.location.name}}</view>
+    </view>
+  </view>
+  <view class="info-content">
+    {{item.description}}
+    </view>
+    <view class="imgbox">
+      <block wx:for="{{item.list}}" wx:for-item="fileList" wx:key="index">
+        <image class="img" src="{{fileList}}" mode="aspectFill"/>
+      </block>
+    </view>
+</view>
+<!-- 广告 -->
+<view class="message-bar">全部留言</view>
+<view class="message-box">
+  <view class="message-list">
+    <view class="message-item" wx:for="{{item.message}}" wx:key="index">{{item}}</view>
+  </view>  
+  <view class="edit-box">
+    <view catchtap="navToEdit" data-detail="{{item}}">编辑</view>
+    <view catchtap="delete">删除</view>
+  </view>
+  
+</view>

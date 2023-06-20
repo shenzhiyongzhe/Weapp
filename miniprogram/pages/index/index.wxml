@@ -58,7 +58,9 @@
   show-scrollbar="{{false}}"
   wx:if="{{!isEmpty}}"
 >
-  <Card list="{{list}}"/>
+  <block wx:for="{{list}}" wx:key="index" >
+    <Card item="{{item}}" bindtap="navToPageDetail" data-detail="{{item}}"/>
+  </block>
 </scroll-view>
 
 <button catchtap="test" class="test-btn">回到顶部</button>

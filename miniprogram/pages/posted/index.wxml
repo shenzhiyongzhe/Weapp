@@ -1,3 +1,7 @@
-<view>
-  <Card list="{{list}}"/>
+<block wx:for="{{list}}" wx:key="index">
+  <Card item="{{item}}" bindtap="navToHistory" data-item="{{item}}"/>
+</block>
+<!-- 搜索提示 -->
+<view class="empty-box" wx:if="{{isEmpty}}">
+  <van-empty  image="search" description="空空如也" />
 </view>

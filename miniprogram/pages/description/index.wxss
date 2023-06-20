@@ -1,13 +1,13 @@
 /* pages/description/index.wxss */
 .tips {
   width: 96vw;
-  background-color: rgba(239, 249, 250, 0.5);
+  background-color: rgba(239, 249, 250, 0.8);
   border-radius: 20rpx;
   padding: 20rpx;
   margin: 0 auto;
   box-sizing: border-box;
   font-size: 24rpx;
-  color: rgb(129, 127, 127);
+  color: rgb(109, 108, 108);
 }
 .text-description{
   width: 96vw;
@@ -16,7 +16,7 @@
   padding: 20rpx;
   box-sizing: border-box;
   border-radius: 20rpx;
-  background-color: rgba(239, 249, 250, 0.5);
+  background-color: rgba(221, 250, 253, 0.8);
 }
 .btn-finish {
   width: 70vw;

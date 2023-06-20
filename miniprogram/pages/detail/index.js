@@ -1,4 +1,6 @@
 // pages/detail/index.js
+import formatTime from '../../utils/formatTime.js'
+
 const db = wx.cloud.database();
 
 Page({
@@ -19,7 +21,8 @@ Page({
       data: {
         message:this.data.detail.message
       }
-    })
+    });
+    this.setData({message: ''})
     console.log(this.data.detail.message)
   },
 
@@ -42,6 +45,7 @@ Page({
       // const watch = 
       db.collection('list').doc(this.data.detail._id).watch({
       onChange: snapshot => {
+        snapshot.docs[0].time = formatTime(snapshot.docs[0].time)
         this.setData({detail: snapshot.docs[0]})
         console.log('snapshot', snapshot.docs[0].message)
       },

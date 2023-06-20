@@ -182,6 +182,7 @@ Page({
     wx.navigateTo({
       url: `/pages/detail/index?detail=${encodeURIComponent(JSON.stringify(e.currentTarget.dataset.detail))}`,
     })
+    // console.log(e.currentTarget.dataset.item)
   },
 
 

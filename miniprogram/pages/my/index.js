@@ -48,6 +48,7 @@ Page({
     }
   
   },
+
   async onChooseAvatar(e){
     const avatar = e.detail.avatarUrl;
     this.setData({avatar});

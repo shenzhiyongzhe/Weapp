@@ -12,7 +12,7 @@
     <van-field type="text" label="详情" name="description" value="{{description}}" placeholder="详细描述" is-link/>
   </navigator>
   <view class="photo-box">
-    <van-uploader file-list="{{ tempUrl }}" catch:delete="deletImg" max-count="4" multiple deletable="{{ true }}"
+    <van-uploader file-list="{{ list }}" catch:delete="deletImg" max-count="4" multiple deletable="{{ true }}"
      upload-text="点击上传" bind:after-read="afterRead"  />
   </view>
 </van-cell-group>

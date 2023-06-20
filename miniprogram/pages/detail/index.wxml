@@ -38,10 +38,10 @@
 <view class="message-bar">全部留言</view>
 <view class="message-box">
   <view class="message-list">
-    <view wx:for="{{detail.message}}" wx:key="index">{{item}}</view>
+    <view class="message-item" wx:for="{{detail.message}}" wx:key="index">{{item}}</view>
   </view>  
   <view class="leave-message">
-    <input type="text" bindblur="getInputValue" placeholder="说出你想了解的"/>
+    <input type="text" value="{{message}}" bindblur="getInputValue" placeholder="说出你想了解的"/>
     <view catchtap="leaveMessage">留言</view>
   </view>
   

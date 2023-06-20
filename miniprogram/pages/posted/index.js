@@ -11,7 +11,8 @@ Page({
     pageSize: 5,
     maxCount: 0,
     openid: wx.getStorageSync('openid'),
-    list: []
+    list: [],
+    isEmpty: false
   },
   getMaxCount(openid){
     db.collection('list').where({_openid: openid}).count().then(res => this.setData({maxCount: res.total}))
@@ -30,6 +31,12 @@ Page({
     //     icon: 'none'
     //   });
   },
+  navToHistory(e){
+    wx.navigateTo({
+      url: `/pages/historyDetail/index?item=${encodeURIComponent(JSON.stringify(e.currentTarget.dataset.item))}`,
+    })
+    console.log("navigete to historyDetail", e.currentTarget.dataset.item)
+  },
   /**
    * 生命周期函数--监听页面加载
    */
@@ -41,22 +48,6 @@ Page({
 
   //触底加载
   async reachBottomLoad(){
-    const {isMax, queryField, loadFlag} = this.data;
-    console.log("isMax:", isMax)
-    if(isMax == false){
-      switch(loadFlag){
-        case 'default':
-          this.getList(); break;
-        case 'keyword':
-          this.queryData(queryField); break;
-        case 'sortByLatest':
-          this.sortBy("time", "desc"); break;
-        case 'sortByCheapest':
-          this.sortBy("rent", "asc"); break;
-        default : this.getList();
-      }
-    }
-    else
-      return console.log('data is load out')
+   
   },
 })

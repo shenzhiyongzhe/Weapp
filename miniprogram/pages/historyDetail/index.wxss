@@ -97,32 +97,19 @@ map{
   font-size: 26rpx;
   background-color: white;
 }
-/* .message-list{
-  min-height: 400rpx;
-  box-sizing: border-box;
-  border-radius: 20rpx;
-} */
+
 .message-item{
   line-height: 70rpx;
   border-bottom: 1rpx solid rgb(228, 226, 226);
 }
-.leave-message{
-  width: 100vw;
-  box-sizing: content-box;
-  margin-top: 100rpx;
+
+.edit-box{
+  width: 100%;
   display: flex;
-  align-items: center;
-  font-size: 26rpx;
-  background-color: white;
+  justify-content: space-around;
 }
-.leave-message input{
-  flex: 4;
+.edit-box view{
   padding: 10rpx 20rpx;
-  border: 1rpx solid rgb(216, 218, 216);
-}
-.leave-message view{
-  width: 20%;
-  line-height: 70rpx;
-  text-align: center;
-  background-color: rgb(193, 233, 233);
+  border-radius: 20rpx;
+  background-color: rgb(168, 218, 218);
 }
