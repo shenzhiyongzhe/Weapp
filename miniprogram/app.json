@@ -5,7 +5,10 @@
     "pages/my/index",
     "pages/description/index",
     "pages/detail/index",
-    "pages/posted/index"
+    "pages/posted/index",
+    "pages/historyDetail/index",
+    "pages/edit/index"
+
   ],
 
   "tabBar": {
