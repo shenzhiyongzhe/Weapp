@@ -12,16 +12,16 @@ Page({
   },
   delete(){
     Dialog.confirm({
-      title: '1',
       message: '确定要删除吗',
     })
       .then(() => {
         // on confirm
+        wx.cloud.database().collection("list").where({_id: this.data.item._id}).remove();
+        wx.navigateBack();
       })
       .catch(() => {
         // on cancel
       })
-    // wx.cloud.database().collection("list").where({_id: this.data.item._id}).remove()
   },
 
   onLoad(options) {
@@ -68,24 +68,5 @@ Page({
 
   },
 
-  /**
-   * 页面相关事件处理函数--监听用户下拉动作
-   */
-  onPullDownRefresh() {
-
-  },
-
-  /**
-   * 页面上拉触底事件的处理函数
-   */
-  onReachBottom() {
-
-  },
-
-  /**
-   * 用户点击右上角分享
-   */
-  onShareAppMessage() {
-
-  }
+ 
 })

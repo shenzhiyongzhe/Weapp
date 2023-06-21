@@ -29,7 +29,7 @@ Page({
       const data = await this.queryData(this.data.queryPara);
       if(data !== null)
         this.setData({list: this.data.list.concat(data)})
-      console.log("getList data:", data)
+      console.log("getList data:", this.data.list)
   },
   // 查询信息
   queryData({keyword, district, rent, select, order}){

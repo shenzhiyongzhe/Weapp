@@ -70,7 +70,7 @@ deleteImg(e){
     const location = this.data.location;
     const time = new Date().getTime();
     const {title, sex, description} = e.detail.value;
-    const rent = Number(e.detail.value.rent)
+    const rent = parseInt(e.detail.value.rent)
     if(title == '')
       return wx.showToast({
         title: '请概况房子基本信息',

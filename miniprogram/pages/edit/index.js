@@ -19,12 +19,11 @@ Page({
     const rent = Number(e.detail.value.rent);
     const url = await this.uploadFile();
     const list = this.data.tempUrl.concat(url);
-    console.log(e.detail.value, list)
     wx.cloud.database().collection("list").where({_id: this.data._id}).update({
       data: {
         title, rent, sex, location, description, list
       },
-      success: res => {console.log(res)}
+      success: res => {console.log("更新成功", res); wx.navigateBack()}
     })
   },
   afterRead(e){

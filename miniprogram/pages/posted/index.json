@@ -1,5 +1,6 @@
 {
   "usingComponents": {
-    "Card": "../../components/card/card"
+    "Card": "../../components/card/card",
+    "van-empty": "@vant/weapp/empty/index"
   }
 }

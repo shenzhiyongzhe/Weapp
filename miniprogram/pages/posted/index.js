@@ -2,7 +2,6 @@
 const db = wx.cloud.database();
 
 Page({
-
   /**
    * 页面的初始数据
    */
@@ -15,35 +14,47 @@ Page({
     isEmpty: false
   },
   getMaxCount(openid){
-    db.collection('list').where({_openid: openid}).count().then(res => this.setData({maxCount: res.total}))
+    return new Promise(resolve => {
+      db.collection('list').where({_openid: openid}).count().then(res => resolve(res.total))
+    })
   },
   getPosted(){
     const {pageIndex, pageSize, maxCount} = this.data;
     console.log(maxCount, this.data.openid)
+    if(maxCount === 0){
+      console.log("还未发布帖子")
+    }
+    else if(this.data.list.length == 0){
+      this.setData({isEmpty: true})
+      console.log("没有数据了")
+    }
 
-    // if(pageIndex * pageSize < maxCount)
-      db.collection('list').limit(10).where({_openid: this.data.openid}).get().then(res => {
-        this.setData({list: this.data.list.concat(res.data)})
-    })
-    // else 
-    //   wx.showToast({
-    //     title: '暂无数据',
-    //     icon: 'none'
-    //   });
   },
   navToHistory(e){
     wx.navigateTo({
       url: `/pages/historyDetail/index?item=${encodeURIComponent(JSON.stringify(e.currentTarget.dataset.item))}`,
     })
-    console.log("navigete to historyDetail", e.currentTarget.dataset.item)
   },
   /**
    * 生命周期函数--监听页面加载
    */
-  onLoad(options) {
+  async onLoad(options) {
     const openid = options.openid;
-    this.getMaxCount(openid);
-    this.getPosted()
+    const maxCount = await this.getMaxCount(openid);
+    if(maxCount === 0)
+      this.setData({isEmpty: true})
+    db.collection("list").where({_openid: openid}).watch({
+      onChange: snapshot => {
+        // snapshot.docs[0] = formatTime(snapshot.docs[0].time)
+        this.setData({list: snapshot.docs})
+        if(snapshot.docs.length === 0)
+          this.setData({isEmpty: true})
+        console.log('snapshot', snapshot.docs)
+      },
+      onError: function(err) {
+        console.error('the watch closed because of error', err)
+      }
+    })
   },
 
   //触底加载
