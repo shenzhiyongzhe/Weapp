@@ -3,7 +3,7 @@ Page({
 
   data: { description: ''},
 
-  navBackToPublish(){
+  navBack(){
     wx.createSelectorQuery().select(".text-description")
       .fields({properties: ["value"]})
       .exec( res => {

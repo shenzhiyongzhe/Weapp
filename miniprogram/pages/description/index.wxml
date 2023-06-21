@@ -3,5 +3,5 @@
   走心的文案将大大提高出租的效率，详细描述房源，宠物等情况并及时更新房源的出租情况。
 </view>
 <textarea class="text-description" maxlength="500" value="{{description}}" auto-focus placeholder="请详细填写"></textarea>
-<button class="btn-finish" bindtap="navBackToPublish">写好了</button>
+<button class="btn-finish" bindtap="navBack">写好了</button>
 

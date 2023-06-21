@@ -1,4 +1,4 @@
-// pages/historyDetail/index.js
+import Dialog from '../../miniprogram_npm/@vant/weapp/dialog/dialog';
 Page({
   data: {
     item: {},
@@ -7,10 +7,25 @@ Page({
   navToEdit(e){
     wx.navigateTo({
       url: `/pages/edit/index?detail=${encodeURIComponent(JSON.stringify(e.currentTarget.dataset.detail))}`,
-    })
+    });
+    // console.log("navi to edit", e.currentTarget.dataset.detail)
   },
+  delete(){
+    Dialog.confirm({
+      title: '1',
+      message: '确定要删除吗',
+    })
+      .then(() => {
+        // on confirm
+      })
+      .catch(() => {
+        // on cancel
+      })
+    // wx.cloud.database().collection("list").where({_id: this.data.item._id}).remove()
+  },
+
   onLoad(options) {
-    const item = JSON.parse(decodeURIComponent( options.item))
+    const item = JSON.parse(decodeURIComponent(options.item))
     this.setData({
       item, 
       marker: [{      
